@@ -38,21 +38,27 @@ Choose the interactive lab engine that showcases authentic domain fluency:
 
 ---
 
-## 4. Seamless Dual-Row Velocity Marquee (`initMarquee` + `stepMarquee`)
+## 4. Sustained Kinetic Choreography (`initHeroParallax`, `initInteractiveProps`, `initKineticHeadingsAndStagger`, `initMarquee`)
 
-- Duplicate items cleanly once (`[...list, ...list]`) and compute `halfW = row.scrollWidth / 2` dynamically inside rAF (eliminates seam jump bugs).
-- Support scroll-velocity `skewX`, drag scrubbing (`6px` click-suppress threshold), and hover focus slowdown (`0.18x`).
+- **Hero Scroll-Driven Depth Curtain**: Inside the pointer parallax glide loop, smoothly separate `#heroTitleLine1` / `#heroTitleLine2` horizontally, sink/scale `#heroAvatarWrap`, and shift desktop `.hero-orbit-chip` badges based on normalized `scrollY / innerHeight` (cleared cleanly below `768px`).
+- **Continuous 3D Prop Physics (`initInteractiveProps`)**: Combine subtle continuous sinusoidal float (`Math.sin(t + phase) * 7px`) with 260px pointer repulsion springs and click 360° bounce + `#fxSparkCanvas` particle bursts.
+- **Masked Split-Line Headings & Stagger**: Split `[data-kinetic-heading]` by `<br>` into `.kinetic-line > .kinetic-line-inner` and trigger `.is-revealed` / `.is-in` via `IntersectionObserver` (zero random scramble flash).
+- **Dual-Row Marquee + Kinetic Ribbons**: Duplicate items cleanly once (`[...list, ...list]`), compute `halfW = row.scrollWidth / 2` dynamically inside rAF, apply scroll-velocity `skewX`, drag scrubbing (`6px` threshold), hover slow-down (`0.18x`), and sync `.kinetic-ribbon-track` dividers in opposite directions.
+
+## 5. Wide Awwwards Bento Case Study Drawer (`openWorkDrawer`)
+
+- Populate 7 rich Bento layers cleanly on open/switch: dynamic `--case-accent` aura & progress bar (`CASE XX / TOTAL`), role/timeline/tags chips, lightbox-clickable visual, 3 animated KPI cards, dark-vs-light Challenge & Strategy spread, 4-step pipeline flow, click-to-copy color swatches or tech chips (with particle burst), 2×2 numbered highlight tiles, deliverable file-type extension badges, and Next Case title preview on `#drawerNextWorkBtn`. Always replay `.drawer-bento-item` entrance animations on work switch.
 
 ---
 
-## 5. Adaptive Console Modal (`#termModalBackdrop` vs `#qaModalBackdrop`)
+## 6. Adaptive Console Modal (`#termModalBackdrop` vs `#qaModalBackdrop`)
 
 - **Tech Users**: Keep `>_` Geek CLI Terminal (`whoami`, `works`, `lab`, `contact`, `theme`).
 - **Design / Business / Humanities / General Users**: Keep the sleek macOS-style floating modal aesthetic, but transform it into **"✨ 互动快问快答台 (Quick Q&A Studio)"** with friendly clickable topic chips (`求职/合作意向`, `核心软件与技能`, `代表项目亮点`, `报价与档期说明`, `一键复制联系方式`) — approachable, zero-intimidation, and intuitive for HR or clients!
 
 ---
 
-## 6. Human-Centered Conversion Flow & Slider Precision
+## 7. Human-Centered Conversion Flow & Slider Precision
 
 1. **Visitor Intent Quick-Switch (`#workIntentButtons`)**: Split works by real visitor persona (e.g. `HR · 看实习项目` vs `甲方 · 看商业约稿`). Always compute counts dynamically or match `data.js` 1:1.
 2. **Range Slider Step Alignment**: When binding preset buttons to `<input type="range" step="0.02">`, ensure `(presetValue - min)` is an exact integer multiple of `step` (e.g. use `min="0.80"` rather than `0.85` for even `0.02` steps) so preset reads back exact values without browser step rounding.

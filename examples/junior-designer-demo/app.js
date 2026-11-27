@@ -8,6 +8,9 @@
   let currentDrawerWork = null;
   let radarChartInstance = null;
   let donutChartInstance = null;
+  let lastPointerX = window.innerWidth * 0.5;
+  let lastPointerY = window.innerHeight * 0.35;
+  let emitSparks = () => {};
 
   function showToast(msg) {
     const t = document.getElementById("toast");
@@ -18,12 +21,123 @@
     t._timer = setTimeout(() => { t.hidden = true; }, 2600);
   }
 
-  function copyText(text, successMsg) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(() => showToast(successMsg)).catch(() => showToast(successMsg));
-    } else {
-      showToast(successMsg);
+  function copyText(text, successMsg, originEl) {
+    let sx = lastPointerX;
+    let sy = lastPointerY;
+    if (originEl && originEl.getBoundingClientRect) {
+      const r = originEl.getBoundingClientRect();
+      sx = r.left + r.width * 0.5;
+      sy = r.top + r.height * 0.5;
     }
+    const celebrate = () => {
+      emitSparks(sx, sy, 16, "#F59E0B");
+      showToast(successMsg);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(celebrate).catch(celebrate);
+    } else {
+      celebrate();
+    }
+  }
+
+  // 0. Click / Copy Particle Burst Engine (0% CPU idle)
+  function initFxSparks() {
+    const canvas = document.getElementById("fxSparkCanvas");
+    if (!canvas || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = canvas.getContext("2d");
+    let w = 0, h = 0, rafId = 0;
+    const sparks = [], ripples = [];
+
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth; h = window.innerHeight;
+      canvas.width = w * dpr; canvas.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    function tick() {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        rp.r += (rp.maxR - rp.r) * 0.16;
+        rp.alpha *= 0.88;
+        if (rp.alpha < 0.02) { ripples.splice(i, 1); continue; }
+        ctx.save();
+        ctx.strokeStyle = rp.color; ctx.globalAlpha = rp.alpha; ctx.lineWidth = 1.6;
+        ctx.beginPath(); ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2); ctx.stroke();
+        ctx.restore();
+      }
+      for (let i = sparks.length - 1; i >= 0; i--) {
+        const sp = sparks[i];
+        sp.vx *= 0.94; sp.vy = sp.vy * 0.94 + 0.11;
+        sp.x += sp.vx; sp.y += sp.vy; sp.rot += sp.vrot; sp.alpha *= 0.91;
+        if (sp.alpha < 0.03) { sparks.splice(i, 1); continue; }
+        ctx.save();
+        ctx.translate(sp.x, sp.y); ctx.rotate(sp.rot);
+        ctx.fillStyle = sp.color; ctx.globalAlpha = sp.alpha;
+        ctx.fillRect(-sp.size * 0.5, -sp.size * 0.28, sp.size, sp.size * 0.56);
+        ctx.restore();
+      }
+      if (sparks.length || ripples.length) rafId = requestAnimationFrame(tick);
+      else { rafId = 0; ctx.clearRect(0, 0, w, h); }
+    }
+
+    emitSparks = (x, y, count = 14, ringColor = "#F59E0B") => {
+      const px = typeof x === "number" ? x : lastPointerX;
+      const py = typeof y === "number" ? y : lastPointerY;
+      const palette = ["#2563EB", "#60A5FA", "#F59E0B", "#FBBF24"];
+      for (let i = 0; i < count; i++) {
+        const ang = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.5;
+        const spd = 2.2 + Math.random() * 4.5;
+        sparks.push({ x: px, y: py, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd - 1.0, size: 3 + Math.random() * 3.4, rot: Math.random() * Math.PI, vrot: (Math.random() - 0.5) * 0.24, alpha: 0.85, color: palette[i % palette.length] });
+      }
+      ripples.push({ x: px, y: py, r: 4, maxR: 46, alpha: 0.45, color: ringColor });
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    };
+  }
+
+  // 0B. Desktop Magnetic Precision Cursor
+  function initCustomCursor() {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const dot = document.getElementById("cursorDot");
+    const ring = document.getElementById("cursorRing");
+    const label = document.getElementById("cursorLabel");
+    if (!dot || !ring) return;
+
+    let tx = -100, ty = -100, rx = -100, ry = -100, visible = false;
+    window.addEventListener("pointermove", (e) => {
+      tx = e.clientX; ty = e.clientY;
+      lastPointerX = e.clientX; lastPointerY = e.clientY;
+      visible = true;
+      dot.style.opacity = "1"; ring.style.opacity = "1";
+      dot.style.transform = `translate3d(${(tx - 3.5).toFixed(1)}px, ${(ty - 3.5).toFixed(1)}px, 0)`;
+
+      const hit = e.target.closest?.(".work-card, .marquee-card, .grading-stage-wrap, .lanyard-card-3d, .about-prop, .drawer-main-img-box, .sticky-img-tile");
+      if (hit) {
+        ring.classList.add("is-hover");
+        if (label) {
+          if (hit.matches(".grading-stage-wrap, .lanyard-card-3d")) label.textContent = "DRAG ↔";
+          else if (hit.matches(".about-prop")) label.textContent = "BOUNCE ✦";
+          else if (hit.matches(".drawer-main-img-box, .sticky-img-tile")) label.textContent = "ZOOM ↗";
+          else label.textContent = "CASE ↗";
+        }
+      } else {
+        ring.classList.remove("is-hover");
+      }
+    }, { passive: true });
+
+    document.addEventListener("pointerleave", () => { visible = false; dot.style.opacity = "0"; ring.style.opacity = "0"; });
+    (function loop() {
+      if (visible) {
+        rx += (tx - rx) * 0.16; ry += (ty - ry) * 0.16;
+        const off = ring.classList.contains("is-hover") ? 34 : 19;
+        ring.style.transform = `translate3d(${(rx - off).toFixed(1)}px, ${(ry - off).toFixed(1)}px, 0)`;
+      }
+      requestAnimationFrame(loop);
+    })();
   }
 
   // 1. Calm WebGL FBM Liquid Silk Shader (Klein Blue #2563EB + Warm Amber #F59E0B)
@@ -138,7 +252,7 @@
     })(t0);
   }
 
-  // 2. Hero Parallax & Metrics
+  // 2. Hero Scroll-Driven Depth Curtain + Pointer Parallax & Metrics
   function initHeroParallaxAndMetrics() {
     const container = document.getElementById("heroMetricsGrid");
     if (container && DATA.heroStats) {
@@ -161,49 +275,92 @@
       setTimeout(() => requestAnimationFrame(tick), 200);
     }
 
-    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
     const avatarWrap = document.getElementById("heroAvatarWrap");
     const t1 = document.getElementById("heroTitleLine1");
     const t2 = document.getElementById("heroTitleLine2");
+    const chips = Array.from(document.querySelectorAll(".hero-orbit-chip"));
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
     let tx = 0, ty = 0, cx = 0, cy = 0;
-    window.addEventListener("pointermove", (e) => {
-      tx = e.clientX / Math.max(1, window.innerWidth) - 0.5;
-      ty = e.clientY / Math.max(1, window.innerHeight) - 0.5;
-    }, { passive: true });
+
+    if (finePointer) {
+      window.addEventListener("pointermove", (e) => {
+        tx = e.clientX / Math.max(1, window.innerWidth) - 0.5;
+        ty = e.clientY / Math.max(1, window.innerHeight) - 0.5;
+      }, { passive: true });
+    }
+
     (function glide() {
-      if (window.innerWidth > 768 && window.scrollY < window.innerHeight) {
-        cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+      const sy = window.scrollY;
+      const vh = Math.max(600, window.innerHeight);
+      if (window.innerWidth > 768 && sy < vh * 1.15) {
+        if (finePointer) { cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08; }
+        const sp = Math.min(1, sy / vh);
         const dx = cx * 20, dy = cy * 12;
-        if (avatarWrap) avatarWrap.style.transform = `translateX(calc(-50% + ${dx.toFixed(1)}px)) translateY(${dy.toFixed(1)}px) perspective(900px) rotateY(${(cx * 9).toFixed(2)}deg) rotateX(${(-cy * 6).toFixed(2)}deg)`;
-        if (t1) t1.style.transform = `translate3d(${(-dx * 0.45).toFixed(1)}px, ${(-dy * 0.28).toFixed(1)}px, 0)`;
-        if (t2) t2.style.transform = `translate3d(${(dx * 0.55).toFixed(1)}px, ${(dy * 0.25).toFixed(1)}px, 0)`;
-      } else if (window.innerWidth <= 768 && avatarWrap) {
-        avatarWrap.style.transform = "";
+        if (avatarWrap) {
+          const avScale = 1 - sp * 0.08;
+          avatarWrap.style.transform = `translateX(calc(-50% + ${dx.toFixed(1)}px)) translateY(${(dy + sp * 34).toFixed(1)}px) scale(${avScale.toFixed(3)}) perspective(900px) rotateY(${(cx * 9).toFixed(2)}deg) rotateX(${(-cy * 6).toFixed(2)}deg)`;
+        }
+        if (t1) t1.style.transform = `translate3d(${(-dx * 0.45 - sp * 46).toFixed(1)}px, ${(-dy * 0.28).toFixed(1)}px, 0)`;
+        if (t2) t2.style.transform = `translate3d(${(dx * 0.55 + sp * 46).toFixed(1)}px, ${(dy * 0.25).toFixed(1)}px, 0)`;
+        chips.forEach((ch, idx) => {
+          const dir = idx === 0 ? -1 : 1;
+          ch.style.transform = `translate3d(${(dx * 0.4 * dir + sp * 28 * dir).toFixed(1)}px, ${(dy * 0.4 - sp * 24).toFixed(1)}px, 0)`;
+        });
+      } else if (window.innerWidth <= 768) {
+        if (avatarWrap) avatarWrap.style.transform = "";
+        if (t1) t1.style.transform = "";
+        if (t2) t2.style.transform = "";
       }
       requestAnimationFrame(glide);
     })();
   }
 
-  // 3. Seamless Dual-Row Marquee + Scroll Choreography
+  // 3. Velocity-Skewed Dual-Row Marquee + Kinetic Ribbons + Scroll Choreography
+  const propStates = new WeakMap();
+
   function initMarqueeAndScroll() {
     const r1 = document.getElementById("marqueeRow1");
     const r2 = document.getElementById("marqueeRow2");
+    const ribbonTracks = Array.from(document.querySelectorAll(".kinetic-ribbon-track"));
     const half = DATA.featuredWorks.slice(0, 5);
     const half2 = DATA.featuredWorks.slice(4, 9);
+    let hoverSlow = false, dragOff = 0, suppressClick = false;
+    let prevSY = window.scrollY, scrollVel = 0, curSkew = 0, curSpeedMul = 1;
+
     const mk = (list) => [...list, ...list].map((w) => `
       <div class="marquee-card" data-work-id="${w.id}">
         <img src="${w.cover}" alt="${w.title}" decoding="async" />
         <span class="marquee-card-tag">${w.code} · ${w.title}</span>
       </div>
     `).join("");
+
     if (r1 && r2) {
       r1.innerHTML = mk(half); r2.innerHTML = mk(half2);
-      [r1, r2].forEach((row) => row.addEventListener("click", (e) => {
-        const card = e.target.closest(".marquee-card");
-        if (!card) return;
-        const w = DATA.featuredWorks.find((x) => x.id === card.dataset.workId);
-        if (w) openWorkDrawer(w);
-      }));
+      [r1, r2].forEach((row) => {
+        row.addEventListener("pointerenter", () => { hoverSlow = true; row.classList.add("is-hovering"); });
+        row.addEventListener("pointerleave", () => { hoverSlow = false; row.classList.remove("is-hovering"); });
+        row.addEventListener("click", (e) => {
+          if (suppressClick) return;
+          const card = e.target.closest(".marquee-card");
+          if (!card) return;
+          const w = DATA.featuredWorks.find((x) => x.id === card.dataset.workId);
+          if (w) openWorkDrawer(w);
+        });
+      });
+
+      document.querySelectorAll(".marquee-track-wrap").forEach((wrap) => {
+        let dragging = false, sx = 0, moved = 0;
+        wrap.addEventListener("pointerdown", (e) => { dragging = true; sx = e.clientX; moved = 0; suppressClick = false; });
+        window.addEventListener("pointermove", (e) => {
+          if (!dragging) return;
+          const dx = e.clientX - sx; sx = e.clientX; moved += Math.abs(dx); dragOff -= dx;
+          if (moved > 6) suppressClick = true;
+        }, { passive: true });
+        window.addEventListener("pointerup", () => {
+          if (!dragging) return; dragging = false;
+          setTimeout(() => { suppressClick = false; }, 60);
+        });
+      });
     }
 
     const pEl = document.getElementById("aboutRevealText");
@@ -222,6 +379,8 @@
 
     function onScroll() {
       const sy = window.scrollY;
+      const dy = sy - prevSY; prevSY = sy;
+      scrollVel = Math.max(-42, Math.min(42, scrollVel * 0.72 + dy * 0.28));
       const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
       if (prog) prog.style.width = `${Math.min(100, (sy / docH) * 100).toFixed(2)}%`;
       if (header) header.classList.toggle("is-scrolled", sy > 36);
@@ -236,9 +395,21 @@
         if (window.innerWidth > 900) {
           props.forEach((el) => {
             const py = (rect.top - vh * 0.3) * parseFloat(el.dataset.parallax || "0.15");
-            el.style.transform = `translate3d(0, ${py.toFixed(1)}px, 0)`;
+            el.dataset.parallaxY = py.toFixed(2);
+            if (!propStates.get(el)) el.style.transform = `translate3d(0, ${py.toFixed(1)}px, 0)`;
           });
         }
+      }
+
+      if (window.innerWidth > 900) {
+        const stickyCards = document.querySelectorAll(".sticky-card");
+        stickyCards.forEach((card, i) => {
+          const next = stickyCards[i + 1];
+          if (!next) { card.style.transform = "scale(1)"; return; }
+          const diff = next.getBoundingClientRect().top - card.getBoundingClientRect().top;
+          const ratio = Math.max(0, Math.min(1, 1 - diff / 420));
+          card.style.transform = `scale(${(1 - ratio * 0.025).toFixed(4)})`;
+        });
       }
     }
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -247,17 +418,168 @@
     (function step(now) {
       const dt = Math.min(32, Math.max(0, now - lastT)) / 16.67;
       lastT = now;
+      curSpeedMul += ((hoverSlow ? 0.18 : 1) - curSpeedMul) * 0.12;
+      offset += 0.44 * curSpeedMul * dt;
+      scrollVel *= 0.88;
+      curSkew += (Math.max(-2.1, Math.min(2.1, scrollVel * 0.045)) - curSkew) * 0.09;
+      const sk = Math.abs(curSkew) < 0.03 ? 0 : curSkew;
+
       if (r1 && r2) {
-        offset += 0.42 * dt;
         const hw1 = r1.scrollWidth > 100 ? r1.scrollWidth / 2 : 1600;
         const hw2 = r2.scrollWidth > 100 ? r2.scrollWidth / 2 : hw1;
-        const s1 = ((offset + window.scrollY * 0.14) % hw1 + hw1) % hw1;
-        const s2 = (((offset * 0.85) + window.scrollY * 0.14) % hw2 + hw2) % hw2;
-        r1.style.transform = `translate3d(-${s1.toFixed(1)}px, 0, 0)`;
-        r2.style.transform = `translate3d(${(-hw2 + s2).toFixed(1)}px, 0, 0)`;
+        const base = offset + window.scrollY * 0.16 + dragOff;
+        const s1 = ((base % hw1) + hw1) % hw1;
+        const s2 = (((base * 0.85) % hw2) + hw2) % hw2;
+        r1.style.transform = `translate3d(-${s1.toFixed(1)}px, 0, 0) skewX(${(-sk).toFixed(2)}deg)`;
+        r2.style.transform = `translate3d(${(-hw2 + s2).toFixed(1)}px, 0, 0) skewX(${sk.toFixed(2)}deg)`;
       }
+
+      ribbonTracks.forEach((tr) => {
+        const dir = Number(tr.dataset.ribbonDir || "1");
+        const hw = tr.scrollWidth > 100 ? tr.scrollWidth / 2 : 1200;
+        const shift = (((offset * 1.15 + window.scrollY * 0.18) % hw) + hw) % hw;
+        tr.style.transform = dir > 0
+          ? `translate3d(-${shift.toFixed(1)}px, 0, 0)`
+          : `translate3d(${(-hw + shift).toFixed(1)}px, 0, 0)`;
+      });
       requestAnimationFrame(step);
     })(lastT);
+  }
+
+  // 3B. ABOUT 3D Corner Props Ambient Float + Mouse Repulsion Spring Physics
+  function initInteractiveProps() {
+    const aboutSec = document.getElementById("sec-about");
+    const props = Array.from(document.querySelectorAll(".about-prop"));
+    if (!aboutSec || !props.length || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    props.forEach((el, idx) => {
+      propStates.set(el, { ox: 0, oy: 0, vx: 0, vy: 0, rot: 0, vrot: 0, scale: 1, vscale: 0, phase: idx * 1.45 });
+      el.addEventListener("click", (e) => {
+        const st = propStates.get(el);
+        if (!st) return;
+        st.vrot += (Math.random() > 0.5 ? 1 : -1) * 26;
+        st.vscale += 0.22; st.vy -= 4.5;
+        emitSparks(e.clientX, e.clientY, 16, "#2563EB");
+      });
+    });
+
+    let mx = -9999, my = -9999, active = false, tickT = 0;
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      window.addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
+    }
+    new IntersectionObserver((en) => {
+      active = en[0].isIntersecting;
+      if (active) requestAnimationFrame(stepProps);
+    }, { threshold: 0.05 }).observe(aboutSec);
+
+    function stepProps() {
+      if (!active) return;
+      tickT += 0.032;
+      if (window.innerWidth > 900) {
+        props.forEach((el) => {
+          const st = propStates.get(el);
+          if (!st) return;
+          const r = el.getBoundingClientRect();
+          const dx = (r.left + r.width * 0.5) - mx, dy = (r.top + r.height * 0.5) - my;
+          const dist = Math.hypot(dx, dy);
+          if (dist > 1 && dist < 260) {
+            const push = (1 - dist / 260) * 1.45;
+            st.vx += (dx / dist) * push; st.vy += (dy / dist) * push; st.vrot += (dx / dist) * 0.45;
+          }
+          st.vx = (st.vx - st.ox * 0.085) * 0.84;
+          st.vy = (st.vy - st.oy * 0.085) * 0.84;
+          st.vrot = (st.vrot - st.rot * 0.09) * 0.86;
+          st.vscale = (st.vscale - (st.scale - 1) * 0.16) * 0.8;
+          st.ox += st.vx; st.oy += st.vy; st.rot += st.vrot; st.scale += st.vscale;
+
+          const floatY = Math.sin(tickT + st.phase) * 7;
+          const floatRot = Math.cos(tickT * 0.8 + st.phase) * 2.5;
+          const py = parseFloat(el.dataset.parallaxY || "0");
+          el.style.transform = `translate3d(${st.ox.toFixed(1)}px, ${(py + st.oy + floatY).toFixed(1)}px, 0) rotate(${(st.rot + floatRot).toFixed(1)}deg) scale(${st.scale.toFixed(3)})`;
+        });
+      }
+      requestAnimationFrame(stepProps);
+    }
+  }
+
+  // 3C. Masked Split-Line Headings & Stagger Observation
+  let staggerObserver = null;
+  function observeStaggerNodes(root = document) {
+    const items = root.querySelectorAll(".work-card, .pillar-card, .about-pillar-cell");
+    items.forEach((el, idx) => {
+      el.classList.add("stagger-item");
+      el.style.setProperty("--stagger-i", String(idx % 6));
+      if (staggerObserver) staggerObserver.observe(el);
+      else el.classList.add("is-in");
+    });
+  }
+
+  function initKineticHeadingsAndStagger() {
+    const headings = document.querySelectorAll("[data-kinetic-heading]");
+    headings.forEach((h) => {
+      if (h.dataset.kineticInit) return;
+      h.dataset.kineticInit = "1";
+      const htmlLines = h.innerHTML.split(/<br\s*\/?>/i);
+      h.innerHTML = htmlLines.map((line, i) => `
+        <span class="kinetic-line"><span class="kinetic-line-inner" style="--line-idx:${i};">${line.trim()}</span></span>
+      `).join("");
+    });
+
+    const hObs = new IntersectionObserver((en) => {
+      en.forEach((item) => {
+        if (item.isIntersecting) {
+          item.target.classList.add("is-revealed");
+          hObs.unobserve(item.target);
+        }
+      });
+    }, { threshold: 0.01, rootMargin: "40px 0px 40px 0px" });
+    headings.forEach((h) => hObs.observe(h));
+
+    staggerObserver = new IntersectionObserver((en) => {
+      en.forEach((item) => {
+        if (item.isIntersecting) {
+          item.target.classList.add("is-in");
+          staggerObserver.unobserve(item.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    observeStaggerNodes(document);
+  }
+
+  // 3D. 3D Perspective Tilt + Cursor Spotlight Rim (Never on .sticky-card)
+  function initTiltAndSpotlight() {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const TILT_SEL = ".work-media-frame, .pillar-card, .contact-meta-card";
+    const ALL_SEL = `${TILT_SEL}, .bento-card, .editorial-panel, .contact-form-panel, .drawer-kpi-card`;
+    let activeCard = null;
+
+    const reset = (c) => {
+      if (!c) return;
+      c.style.setProperty("--spot-opacity", "0");
+      c.classList.remove("is-tilting");
+      if (c.matches(TILT_SEL)) c.style.transform = "";
+    };
+
+    document.addEventListener("pointermove", (e) => {
+      const card = e.target.closest?.(ALL_SEL) || null;
+      if (activeCard && activeCard !== card) reset(activeCard);
+      activeCard = card;
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) return;
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      card.style.setProperty("--mx", `${x.toFixed(1)}px`);
+      card.style.setProperty("--my", `${y.toFixed(1)}px`);
+      card.style.setProperty("--spot-opacity", "1");
+      if (card.matches(TILT_SEL)) {
+        card.classList.add("is-tilting");
+        const nx = (x / r.width - 0.5) * 2, ny = (y / r.height - 0.5) * 2;
+        card.style.transform = `perspective(900px) rotateX(${(-ny * 6.5).toFixed(2)}deg) rotateY(${(nx * 6.5).toFixed(2)}deg) translateY(-5px)`;
+      }
+    }, { passive: true });
+    document.addEventListener("pointerleave", () => { reset(activeCard); activeCard = null; });
+    window.addEventListener("scroll", () => { if (activeCard?.matches(TILT_SEL)) { reset(activeCard); activeCard = null; } }, { passive: true });
   }
 
   // 4. Track B Interactive Lab: Live Before/After Split-Curtain Color Grading Studio
@@ -582,25 +904,161 @@
         if (w) openWorkDrawer(w);
       });
     });
+    observeStaggerNodes(grid);
+  }
+
+  function detectFileBadge(text) {
+    const s = String(text || "").toUpperCase();
+    if (s.includes("FIGMA")) return "FIGMA";
+    if (s.includes("RIVE")) return "RIVE";
+    if (s.includes("AE")) return "AE / MP4";
+    if (s.includes("BLENDER")) return "BLENDER";
+    if (s.includes("JSON")) return "JSON";
+    if (s.includes("PDF")) return "PDF";
+    if (s.includes("AI")) return "AI VECTOR";
+    if (s.includes("H5")) return "MOBILE H5";
+    return "SPEC";
   }
 
   function openWorkDrawer(w) {
     currentDrawerWork = w;
     const d = document.getElementById("workDrawer");
     if (!d) return;
-    document.getElementById("drawerCatBadge").textContent = w.catLabel;
-    document.getElementById("drawerCodeBadge").textContent = w.code;
-    document.getElementById("drawerTitle").textContent = w.title;
-    document.getElementById("drawerSubtitle").textContent = w.subtitle;
-    document.getElementById("drawerMainImg").src = w.cover;
-    document.getElementById("drawerProblem").textContent = w.problem;
-    document.getElementById("drawerSolution").textContent = w.solution;
-    document.getElementById("drawerHighlights").innerHTML = (w.highlights || []).map((x) => `<li>${x}</li>`).join("");
-    document.getElementById("drawerDeliverables").innerHTML = (w.deliverables || []).map((x) => `<li>${x}</li>`).join("");
+    const works = DATA.featuredWorks || [];
+    const idx = Math.max(0, works.findIndex((x) => x.id === w.id));
+    const total = Math.max(1, works.length);
+
+    const panel = d.querySelector(".drawer-panel");
+    const pal = w.palette || ["#0F172A", "#2563EB", "#60A5FA", "#F59E0B"];
+    if (panel) {
+      panel.style.setProperty("--case-accent", pal[1] || "#2563EB");
+      panel.style.setProperty("--case-accent-2", pal[3] || pal[2] || "#F59E0B");
+    }
+
+    const progFill = document.getElementById("drawerProgressFill");
+    if (progFill) progFill.style.width = `${(((idx + 1) / total) * 100).toFixed(1)}%`;
+
+    document.getElementById("drawerCatBadge").textContent = w.catLabel || "";
+    document.getElementById("drawerCodeBadge").textContent = w.code || "";
+    const idxBadge = document.getElementById("drawerIndexBadge");
+    if (idxBadge) idxBadge.textContent = `CASE ${String(idx + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}`;
+
+    const roleEl = document.getElementById("drawerRoleBadge");
+    const timeEl = document.getElementById("drawerTimelineBadge");
+    const tagPills = document.getElementById("drawerTagPills");
+    if (roleEl) roleEl.textContent = `角色 · ${w.role || "主创设计师"}`;
+    if (timeEl) timeEl.textContent = w.timeline || "完整全案交付";
+    if (tagPills) tagPills.innerHTML = (w.tags || []).map((t) => `<span class="drawer-hero-tag">${t}</span>`).join("");
+
+    document.getElementById("drawerTitle").textContent = w.title || "";
+    document.getElementById("drawerSubtitle").textContent = w.subtitle || "";
+    const imgEl = document.getElementById("drawerMainImg");
+    if (imgEl) {
+      imgEl.src = w.cover;
+      imgEl.alt = w.title;
+    }
+
+    const kpiGrid = document.getElementById("drawerKpiGrid");
+    const metrics = w.metrics || [
+      { value: `${(w.highlights || []).length} 项`, label: "核心亮点验收指标" },
+      { value: `${(w.deliverables || []).length} 类`, label: "标准化可编辑交付物" },
+      { value: w.code || "DESIGN", label: "端到端完整案例建档" }
+    ];
+    if (kpiGrid) {
+      const barWidths = ["88%", "78%", "94%"];
+      kpiGrid.innerHTML = metrics.map((m, mi) => `
+        <article class="drawer-kpi-card">
+          <div class="drawer-kpi-val">${m.value}</div>
+          <div class="drawer-kpi-lbl">${m.label}</div>
+          <div class="drawer-kpi-bar"><i style="width:${barWidths[mi % barWidths.length]};"></i></div>
+        </article>
+      `).join("");
+    }
+
+    document.getElementById("drawerProblem").textContent = w.problem || "";
+    document.getElementById("drawerSolution").textContent = w.solution || "";
+
+    const flowEl = document.getElementById("drawerProcessFlow");
+    const steps = w.process || [
+      { step: "01", title: "痛点洞察", desc: "拆解场景盲区与目标受众使用路径。" },
+      { step: "02", title: "结构重塑", desc: "确立信息优先级与核心视觉锚点。" },
+      { step: "03", title: "细节打磨", desc: "校准字体对比度、动效阻尼与系统规范。" },
+      { step: "04", title: "走查交付", desc: "输出可编辑源文件与研发/印刷落地规范。" }
+    ];
+    if (flowEl) {
+      flowEl.innerHTML = steps.map((st) => `
+        <div class="drawer-step-node">
+          <span class="drawer-step-num">${st.step}</span>
+          <strong class="drawer-step-title">${st.title}</strong>
+          <p class="drawer-step-desc">${st.desc}</p>
+        </div>
+      `).join("");
+    }
+
+    const palEl = document.getElementById("drawerPaletteStrip");
+    const palRoles = ["Deep Canvas", "Primary Brand", "Surface Glow", "Highlight Spark"];
+    if (palEl) {
+      palEl.innerHTML = pal.map((hex, pi) => `
+        <button type="button" class="drawer-swatch-card" data-copy-hex="${hex}" title="点击复制色值 ${hex}">
+          <span class="drawer-swatch-chip" style="background:${hex};"></span>
+          <span class="drawer-swatch-meta">
+            <strong>${hex}</strong>
+            <span>${palRoles[pi % palRoles.length]}</span>
+          </span>
+        </button>
+      `).join("");
+    }
+
+    document.getElementById("drawerHighlights").innerHTML = (w.highlights || []).map((x, hi) => `
+      <div class="drawer-highlight-tile">
+        <span class="drawer-hl-idx">${String(hi + 1).padStart(2, "0")}</span>
+        <p>${x}</p>
+      </div>
+    `).join("");
+
+    document.getElementById("drawerDeliverables").innerHTML = (w.deliverables || []).map((x) => `
+      <div class="drawer-deliv-card">
+        <span class="drawer-file-ext">${detectFileBadge(x)}</span>
+        <span class="drawer-deliv-name">${x}</span>
+      </div>
+    `).join("");
+
+    const nextWork = works[(idx + 1) % total];
+    const nextBtn = document.getElementById("drawerNextWorkBtn");
+    if (nextBtn && nextWork) {
+      const shortName = nextWork.title.split(" ")[0];
+      nextBtn.textContent = `下一作品：${nextWork.code} · ${shortName} →`;
+    }
+
+    // Re-trigger Bento cascade cleanly on every work open/switch
+    d.querySelectorAll(".drawer-bento-item").forEach((el) => {
+      el.style.animation = "none";
+      void el.offsetWidth;
+      el.style.animation = "";
+    });
+
     d.hidden = false;
     d.setAttribute("aria-hidden", "false");
     d.querySelector(".drawer-scroll-body").scrollTop = 0;
     syncFloatBarVisibility();
+  }
+
+  function openLightbox(src, label) {
+    const lb = document.getElementById("imgLightbox");
+    const img = document.getElementById("lightboxImg");
+    const cap = document.getElementById("lightboxCaption");
+    if (!lb || !img) return;
+    img.src = src; img.alt = label || "";
+    if (cap) cap.textContent = label || "";
+    lb.hidden = false;
+    lb.setAttribute("aria-hidden", "false");
+  }
+
+  function closeLightbox() {
+    const lb = document.getElementById("imgLightbox");
+    if (!lb) return;
+    lb.hidden = true;
+    lb.setAttribute("aria-hidden", "true");
   }
 
   function stepDrawerWork(delta) {
@@ -633,10 +1091,13 @@
             <ul class="sticky-bullets">${wf.bullets.map((b) => `<li>${b}</li>`).join("")}</ul>
           </div>
           <div class="sticky-visual-trio">
-            ${wf.images.map((im) => `<div class="sticky-img-tile"><img src="${im.src}" alt="${im.label}" /></div>`).join("")}
+            ${wf.images.map((im) => `<div class="sticky-img-tile" data-zoom-src="${im.src}" data-zoom-label="${im.label}" title="点击全屏预览：${im.label}"><img src="${im.src}" alt="${im.label}" /></div>`).join("")}
           </div>
         </article>
       `).join("");
+      wfWrap.querySelectorAll(".sticky-img-tile").forEach((tile) => {
+        tile.addEventListener("click", () => openLightbox(tile.dataset.zoomSrc, tile.dataset.zoomLabel));
+      });
     }
 
     const sGrid = document.getElementById("servicesGrid");
@@ -789,8 +1250,21 @@
     document.getElementById("drawerOverlay")?.addEventListener("click", closeWorkDrawer);
     document.getElementById("drawerPrevWorkBtn")?.addEventListener("click", () => stepDrawerWork(-1));
     document.getElementById("drawerNextWorkBtn")?.addEventListener("click", () => stepDrawerWork(1));
-    document.getElementById("drawerInquireBtn")?.addEventListener("click", () => {
-      copyText(DATA.profile.wechat, `已复制《${currentDrawerWork?.title}》咨询话术与微信：${DATA.profile.wechat}`);
+    document.getElementById("drawerMainImgBox")?.addEventListener("click", () => {
+      if (currentDrawerWork) openLightbox(currentDrawerWork.cover, `${currentDrawerWork.code} · ${currentDrawerWork.title}`);
+    });
+    document.getElementById("drawerPaletteStrip")?.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-copy-hex]");
+      if (!btn) return;
+      const hex = btn.dataset.copyHex;
+      copyText(hex, `已复制色板色值 ${hex}`, btn);
+    });
+    document.getElementById("lightboxCloseBtn")?.addEventListener("click", closeLightbox);
+    document.getElementById("imgLightbox")?.addEventListener("click", (e) => {
+      if (e.target.id === "imgLightbox" || e.target.id === "lightboxCloseBtn") closeLightbox();
+    });
+    document.getElementById("drawerInquireBtn")?.addEventListener("click", (e) => {
+      copyText(DATA.profile.wechat, `已复制《${currentDrawerWork?.title}》咨询话术与微信：${DATA.profile.wechat}`, e.currentTarget);
     });
 
     ["copyContactHeaderBtn", "heroCopyWechatBtn", "copyWechatContactBtn", "floatWechatBtn"].forEach((id) => {
@@ -830,18 +1304,28 @@
 
     document.addEventListener("keydown", (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); openCmd(); }
-      if (e.key === "Escape") { closeCmd(); closeQa(); closeWorkDrawer(); }
+      if (e.key === "Escape") { closeLightbox(); closeCmd(); closeQa(); closeWorkDrawer(); }
+      const d = document.getElementById("workDrawer");
+      if (d && !d.hidden) {
+        if (e.key === "ArrowLeft") stepDrawerWork(-1);
+        if (e.key === "ArrowRight") stepDrawerWork(1);
+      }
     });
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    initFxSparks();
+    initCustomCursor();
     initHeroWebglFluid();
     initHeroParallaxAndMetrics();
     initMarqueeAndScroll();
+    initInteractiveProps();
     initDesignGradingLab();
     initLanyardPhysics();
     initWorksGallery();
     initSectionsAndCharts();
+    initKineticHeadingsAndStagger();
+    initTiltAndSpotlight();
     bindGlobalModalsAndEvents();
   });
 })();

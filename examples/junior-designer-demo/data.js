@@ -22,8 +22,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "PRODUCT UI · DESIGN SYSTEM",
       title: "PULSE 空间音频与情绪歌单 App 全链路交互重构",
       subtitle: "面向 Z 世代通勤与专注场景的深色空间声场播放器，构建 48 个响应式 Figma Tokens 与动效曲线。",
+      role: "核心交互 & Design System 主创",
+      timeline: "5 周 · 个人端到端全案",
       tags: ["Figma Variables", "Design System", "Lottie"],
       cover: "./assets/covers/case-01.svg",
+      palette: ["#0B1021", "#2563EB", "#60A5FA", "#F59E0B"],
+      metrics: [
+        { value: "48 组", label: "Dark/Light 语义化 Token" },
+        { value: "96%", label: "研发物理微交互还原率" },
+        { value: "-38%", label: "32名内测用户任务耗时降幅" }
+      ],
+      process: [
+        { step: "01", title: "深色声场调研", desc: "拆解夜间与通勤 14 个核心听歌触点，消除 4 级跳转冗余。" },
+        { step: "02", title: "单指手势重构", desc: "建立双态情绪胶囊导航，1 秒直达白噪音混音台。" },
+        { step: "03", title: "语义化 Token", desc: "用 Figma Variables 搭建 48 组双态颜色与圆角变量规范。" },
+        { step: "04", title: "32人走查交付", desc: "输出弹簧物理黑胶阻尼参数表与 Lottie 微交互资源。" }
+      ],
       problem: "旧版音频产品歌单发现路径长达 4 级，且夜间播放页高饱和背景叠加专辑图容易造成文字可读性下降。",
       solution: "引入双态情绪胶囊导航与模糊专辑微光扩散层，将“一键进入白噪音混音台”缩短至单指手势 1 秒直达，并交付完整 Design Token 规范文档。",
       highlights: [
@@ -41,8 +55,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "AI WORKSPACE · CANVAS UX",
       title: "AURA NOTES 无限画布灵感收集与 AI 情绪版工作台",
       subtitle: "专为设计师与策展人打造的无界参考图采集白板，支持自动色板提取与网格磁吸排布。",
+      role: "空间画布 UX & AI 交互设计",
+      timeline: "4 周 · 课程高分旗舰作品",
       tags: ["Spatial UI", "Color Extraction", "Web App"],
       cover: "./assets/covers/case-02.svg",
+      palette: ["#0E1528", "#3B82F6", "#818CF8", "#FBBF24"],
+      metrics: [
+        { value: "0.3s", label: "拖入自动提取 5 色 Pantone" },
+        { value: "18 套", label: "空状态与拖拽反馈规范" },
+        { value: "96/100", label: "大三交互设计方向最高分" }
+      ],
+      process: [
+        { step: "01", title: "跨工具痛点梳理", desc: "追踪 12 位设计生采图路线，定位色相检索与归档断点。" },
+        { step: "02", title: "无边沉浸画布", desc: "设定鼠标静止 1.5s 自动隐退工具栏的零干扰视口。" },
+        { step: "03", title: "悬浮吸管色轮", desc: "拖入参考图即时聚类主副色阶并联动 Pantone 标签。" },
+        { step: "04", title: "高保真 Web 交付", desc: "交付全交互状态机原型与关键画布缩放标注。" }
+      ],
       problem: "设计师收集灵感时需在花瓣、Pinterest 与本地文件夹间反复切换，参考图无法直接按色系或构图检索。",
       solution: "设计悬浮吸管色相筛选条与自由画布缩放比例锚点，实现拖入图片 0.3 秒生成 5 色 Pantone 卡片并自动归档。",
       highlights: [
@@ -60,8 +88,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "DATA VISUALIZATION · B2B",
       title: "ORBIT STUDIO 校园社团活动票务与文创数据看板",
       subtitle: "将复杂的多校区票务核销与文创周边库存转化为直观可视化图表，助力社团运营决策。",
+      role: "B端数据可视化 & H5 核销设计",
+      timeline: "3 周 · 校园文化节实战上线",
       tags: ["Dashboard UI", "ECharts Spec", "Responsive"],
       cover: "./assets/covers/case-03.svg",
+      palette: ["#0F172A", "#2563EB", "#A3E635", "#F59E0B"],
+      metrics: [
+        { value: "2,400+", label: "电子票务现场流畅核销人次" },
+        { value: "22 张", label: "B端后台与双端响应式界面" },
+        { value: "6 类", label: "全光照高对比图表字体规范" }
+      ],
+      process: [
+        { step: "01", title: "Excel 核销诊断", desc: "跟随 4 个校园市集现场记录扫码拥堵与尺码错漏盲区。" },
+        { step: "02", title: "PC+H5 信息重构", desc: "划分票务实时大盘、断码琥珀预警与移动端单手核销区。" },
+        { step: "03", title: "户内/外对比度", desc: "以克莱因蓝主轨叠加亮青/琥珀警告标签统一 6 类图表。" },
+        { step: "04", title: "线上走查验收", desc: "完成 22 张端到端页面及走查验收清单，文化节零事故上线。" }
+      ],
       problem: "此前校园演出与市集均靠手动填 Excel，无法实时掌握不同学院观演偏好与周边尺码断货预警。",
       solution: "以极简卡片栅格搭配克莱因蓝主色与琥珀预警标签，重构移动端扫码核销端与 PC 端数据概览页。",
       highlights: [
@@ -78,8 +120,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "MOTION PROTOTYPE · AUDIO",
       title: "VELVET AUDIO 桌面端 Hi-Fi 调音台动效系统",
       subtitle: "为独立音频硬件伴侣软件设计旋钮阻尼、频谱粒子响应与窗口无缝折叠转场动画。",
+      role: "动效原型工程师 & 交互视觉",
+      timeline: "3 周 · Rive 状态机专项",
       tags: ["After Effects", "Rive State", "Micro-UX"],
       cover: "./assets/covers/case-04.svg",
+      palette: ["#090D1A", "#38BDF8", "#F43F5E", "#F59E0B"],
+      metrics: [
+        { value: "64px", label: "一键折叠迷你控制胶囊高度" },
+        { value: "60fps", label: "Rive 状态机拖拽零掉帧" },
+        { value: "12 组", label: "三阶贝塞尔与 Spring 动效曲线" }
+      ],
+      process: [
+        { step: "01", title: "硬件手感采样", desc: "测绘真实 Hi-Fi 解码耳放金属阻尼旋钮刻度与惯性回弹。" },
+        { step: "02", title: "Rive 状态机搭建", desc: "建立 Hover、Drag、Detent 磁吸卡点与峰谷余晖四态联动。" },
+        { step: "03", title: "折叠形态推演", desc: "将全尺寸调音台压缩为一指可达的 64px 桌面悬浮胶囊。" },
+        { step: "04", title: "参数工程交付", desc: "交付 AE 工程、可嵌入 .riv 文件与研发精确帧参数文档。" }
+      ],
       problem: "桌面音频工具界面普遍像上世纪老式软件，参数调节缺少真实硬件阻尼手感。",
       solution: "参考物理金属旋钮刻度阻尼与 OLED 频谱余晖效果，使用 Rive 制作可鼠标直接拖拽的状态机动效。",
       highlights: [
@@ -96,8 +152,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "DESIGN TOKENS · MULTI-OS",
       title: "PRISM KIT 跨端校园公益助手设计规范与组件系统",
       subtitle: "服务于校园失物招领、二手书流转与自习室预约的统一多端设计体系与无障碍色彩标准。",
+      role: "设计系统架构师 · 无障碍规范",
+      timeline: "4 周 · 校内开源共创",
       tags: ["WCAG AA", "Token Architecture", "MiniApp"],
       cover: "./assets/covers/case-05.svg",
+      palette: ["#101827", "#2563EB", "#10B981", "#F59E0B"],
+      metrics: [
+        { value: "AA+", label: "全量核心正文对比度达标" },
+        { value: "64 页", label: "图文组件规范与 Token 手册" },
+        { value: "-50%", label: "新开发同学上手适配周期" }
+      ],
+      process: [
+        { step: "01", title: "多端界面审计", desc: "盘点 3 届志愿团队失物招领/预约小程序 36 个样式分歧点。" },
+        { step: "02", title: "三层 Token 解耦", desc: "制定 Foundations → Semantic → Component 三层 JSON 映射。" },
+        { step: "03", title: "WCAG 对比度校准", desc: "全量校准出错警示绿/琥珀/红在浅色与深色底板的 AA 达标率。" },
+        { step: "04", title: "Figma+JSON 开源", desc: "发布社区可复用组件包并配合前端同学落地样式变量。" }
+      ],
       problem: "多届志愿开发团队各自手写样式，导致按钮圆角、字号层级和报错提示色前后严重割裂。",
       solution: "从零梳理 Foundations → Tokens → Components 三层规范，保证 iOS/小程序/Web 三端视觉高度统一。",
       highlights: [
@@ -114,8 +184,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "BRAND VI · PACKAGING",
       title: "SOLSTICE ROAST 至日精品挂耳咖啡品牌识别与包装全案",
       subtitle: "以太阳光线角度为灵感打造的都市轻奢咖啡视觉系统：包含几何 Logo、烫金礼盒与杯套物料。",
+      role: "独立品牌视觉 & 包装 3D 渲染",
+      timeline: "3 周 · 商业签约落地",
       tags: ["Brand VI", "Packaging 3D", "Typography"],
       cover: "./assets/covers/case-06.svg",
+      palette: ["#1C1917", "#2563EB", "#F59E0B", "#F5F2EB"],
+      metrics: [
+        { value: "5 款", label: "独立风味挂耳与刀版盒落地" },
+        { value: "45°", label: "“至日斜角”超级品牌符号" },
+        { value: "4K", label: "Blender 棚拍级商业渲染" }
+      ],
+      process: [
+        { step: "01", title: "货架视觉突围", desc: "对标 15 家独立烘焙门店，找出极简高反差斜角记忆锚点。" },
+        { step: "02", title: "几何 Logo 推导", desc: "以 45° 日照入射角构建品牌标志、英文字距与辅助光影图形。" },
+        { step: "03", title: "印前工艺打样", desc: "选定温润象牙特种纸，搭配克莱因蓝/琥珀金局部 UV 烫印。" },
+        { step: "04", title: "C4D/Blender 出街", desc: "制作 4K 产品三视图直出电商主图，并交付 AI 刀版印前源文件。" }
+      ],
       problem: "独立烘焙品牌缺乏一眼记住的货架识别符号，线下快闪店拍摄打卡率偏低。",
       solution: "提炼“至日时刻”45 度斜角几何光影图形，采用温润象牙纸配克莱因蓝/琥珀金局部 UV 工艺。",
       highlights: [
@@ -132,8 +216,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "EXHIBITION · CURATION",
       title: "BOUNDLESS 2027 学院春季联合毕业设计展主视觉与导视",
       subtitle: "担任总视觉主创：包揽动态主海报、展厅折页、亚克力吊牌与纪念票根全套物料设计。",
+      role: "总视觉主创 & 美术统筹（6 人组）",
+      timeline: "6 周 · 全院展览实体落地",
       tags: ["Key Visual", "Editorial Print", "Wayfinding"],
       cover: "./assets/covers/case-07.svg",
+      palette: ["#0C0C10", "#9AA4B0", "#2563EB", "#F59E0B"],
+      metrics: [
+        { value: "1.2w+", label: "校园主推文主视觉传播阅读" },
+        { value: "40+ 张", label: "印前校色大型展板实体落地" },
+        { value: "6 人", label: "统筹美术小组跨部门高效协同" }
+      ],
+      process: [
+        { step: "01", title: "展厅动线测绘", desc: "梳理 4 大专业展区人流交叉点，解决往届“找不到展区”痛点。" },
+        { step: "02", title: "钢银 3D 主视觉", desc: "制作 Blender 钢银立体字母动态主海报，强化展厅视觉中心。" },
+        { step: "03", title: "色彩导视与票根", desc: "用颜色地贴导视 + 可撕纪念票根建立强仪式感观展动线。" },
+        { step: "04", title: "印前统筹交付", desc: "制定 CMYK 校色标准，按期验收 40+ 展板与文创吊牌零失误出街。" }
+      ],
       problem: "往届校园展览海报信息密度过大、展区指示混乱，观众不易找准各专业展区路线。",
       solution: "用大型钢银立体字母作为空间主锚点，以颜色分区导视地面贴纸 + 可撕式纪念票根串联观展动线。",
       highlights: [
@@ -150,8 +248,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "CULTURAL MERCH · ILLUSTRATION",
       title: "CITY FOLK 城市漫游指南盲盒文创礼盒与插画视觉",
       subtitle: "为本地独立书店定制的伴手礼套盒：收录扁平几何地标插画、贴纸书、透卡与手账胶带。",
+      role: "插画师 & 文创结构设计师",
+      timeline: "4 周 · 大广赛省二等奖",
       tags: ["Illustration", "Merchandise", "Risograph"],
       cover: "./assets/covers/case-08.svg",
+      palette: ["#1E1B4B", "#EC4899", "#F59E0B", "#2563EB"],
+      metrics: [
+        { value: "500 套", label: "首批盲盒 3 周售罄并二次加印" },
+        { value: "12 处", label: "高辨识街头波普地标矢量插画" },
+        { value: "省二等", label: "第16届大广赛省级荣誉认证" }
+      ],
+      process: [
+        { step: "01", title: "青年慢游采风", desc: "走访 12 处街头独立咖啡与天桥地标，提取城市烟火细节。" },
+        { step: "02", title: "双色波普绘制", desc: "采用 Risograph 双色叠印颗粒质感重绘全部扁平几何插画。" },
+        { step: "03", title: "盲盒组合结构", desc: "将透卡、异形模切贴纸与手账胶带装入轻量化抽屉盲盒。" },
+        { step: "04", title: "门店爆款加印", desc: "书店试点 500 套三周售空，作品同获大广赛省级二等奖。" }
+      ],
       problem: "传统旅游纪念品同质化严重，年轻游客更偏好轻量、可贴在手账/电脑上的艺术周边。",
       solution: "以现代波普双色叠印插画重绘 12 处街头咖啡馆与老街天桥，做成盲盒透卡 + 异形贴纸组合。",
       highlights: [
@@ -168,8 +280,22 @@ window.PORTFOLIO_DATA = {
       catLabel: "3D TYPOGRAPHY · POSTER",
       title: "KINETIC TYPE LAB 实验性动态字体海报与三维材质探索",
       subtitle: "连续 21 天三维与平面排版实验计划：融合玻璃折射、液态金属字效与摄影色彩美学。",
+      role: "三维艺术指导 & 字体实验",
+      timeline: "21 天 · 每日实验沉淀计划",
       tags: ["Blender Cycles", "3D Type", "Art Direction"],
       cover: "./assets/covers/case-09.svg",
+      palette: ["#09090B", "#2563EB", "#F59E0B", "#E2E8F0"],
+      metrics: [
+        { value: "21 张", label: "风格克制统一的 4K 实验海报" },
+        { value: "0.5s", label: "信息流高反差视觉抓眼速率" },
+        { value: "16 套", label: "可复用 Blender 程序化材质球" }
+      ],
+      process: [
+        { step: "01", title: "吸睛节奏拆解", desc: "测试移动端信息流前 0.5 秒视线落点，确定强反差金属字距。" },
+        { step: "02", title: "节点变形系统", desc: "编写 Blender 几何节点字体扭曲模板，兼具可读与先锋感。" },
+        { step: "03", title: "双灯折射材质", desc: "调试克莱因蓝+琥珀双缘光玻璃色散材质与电影级景深。" },
+        { step: "04", title: "材质库全集沉淀", desc: "输出 21 张 4K 组图与可直接复用的材质工程预设。" }
+      ],
       problem: "传统二维海报在短视频和移动端信息流中很难在 0.5 秒内抓住观众目光。",
       solution: "建立 Blender 材质球库与节点驱动字母变形模板，实现高反差、有空间景深的动态字体实验。",
       highlights: [

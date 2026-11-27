@@ -183,5 +183,11 @@ Keep the signature **Obsidian `#0C0C0C` ↔ Pure White `#FFFFFF rounded-t-[48px]
    - Use `overflow-x: clip;` on BOTH `html` and `body` (never `overflow-x: hidden`).
    - NEVER include `.sticky-card` inside a `position: relative;` utility block; keep `.sticky-card { position: sticky; top: calc(84px + var(--idx, 0) * 18px); }` intact above `900px`.
 3. **Accordion Click Target**: Add `.acc-trigger > * { pointer-events: none; }` and `scroll-margin-top: 90px;`.
-4. **Drawer Fast Slide-In**: Animate `.drawer-panel` from `opacity: 0; transform: translateX(36px);` over `0.24s` (not `100%`) so footer buttons (`← 上一作品 / 下一作品 →`) stay clickable immediately.
-5. **Mobile Navbar (`<= 640px`)**: Hide desktop search/modal/SFX buttons below `1024px–1180px`, compact `.nav-shell` to `height: 48px; overflow: hidden;` so mobile never overflows `390px`.
+4. **Drawer Fast Slide-In & Wide Awwwards Bento Sheet**:
+   - Animate `.drawer-panel` (`width: min(940px, 96vw)`) from `opacity: 0; transform: translateX(36px);` over `0.24s` (not `100%`) so footer buttons (`← 上一作品 / 下一作品 →`) stay clickable immediately.
+   - Inside `.drawer-scroll-body`, replace plain stacked boxes with 7 distinct Bento surfaces: `.drawer-hero-stage` (`#0d1018` ambient cover + lightbox trigger), `.drawer-kpi-grid` (`repeat(3, 1fr)`), asymmetric `.drawer-narrative-grid` (dark `.drawer-card-challenge` vs light `.drawer-card-strategy`), 4-col `.drawer-process-flow`, interactive `.drawer-palette-strip` / `.drawer-spec-strip`, `repeat(2, 1fr)` `.drawer-highlights-grid`, and `repeat(3, 1fr)` `.drawer-deliverables-grid` (collapsing cleanly to `1fr` under `640px–900px`).
+5. **High-Impact Zero-Flicker Scroll Motion**:
+   - **Masked Split-Line Headings**: `[data-kinetic-heading]` splits lines into `.kinetic-line` (`overflow: hidden`) + `.kinetic-line-inner` sliding from `translateY(112%) skewY(2.2deg)` to `0` when `.is-revealed` fires (with `prefers-reduced-motion` fallback). **CRITICAL**: Put `background: var(--grad-metal); -webkit-background-clip: text; color: transparent;` onto `.kinetic-line-inner` (and clear it on `.display-xl[data-kinetic-heading]`) so WebKit gradient text renders cleanly through transformed spans!
+   - **Kinetic Ribbon Dividers**: `.kinetic-ribbon-band` full-bleed typographic bands scrolled cleanly inside the shared marquee rAF loop.
+   - **Floating Orbit Chips**: Desktop-only `.hero-orbit-chip` (`hidden <= 1024px`) so `390px` mobile stays clean.
+6. **Mobile Navbar (`<= 640px`)**: Hide desktop search/modal/SFX buttons below `1024px–1180px`, compact `.nav-shell` to `height: 48px; overflow: hidden;` so mobile never overflows `390px`.

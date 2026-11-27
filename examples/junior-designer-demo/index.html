@@ -13,6 +13,11 @@
 </head>
 <body>
   <div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
+  <canvas id="fxSparkCanvas" class="fx-spark-canvas" aria-hidden="true"></canvas>
+  <div id="cursorDot" class="cursor-dot" aria-hidden="true"></div>
+  <div id="cursorRing" class="cursor-ring" aria-hidden="true">
+    <span id="cursorLabel" class="cursor-label">VIEW ↗</span>
+  </div>
 
   <!-- 极简渐进毛玻璃顶栏 -->
   <header id="siteHeader" class="site-header">
@@ -86,6 +91,14 @@
         </div>
 
         <div class="hero-centerpiece">
+          <div class="hero-orbit-chip chip-left" aria-hidden="true">
+            <span class="orbit-dot"></span>
+            <span>DESIGN SYSTEM · 48 TOKENS</span>
+          </div>
+          <div class="hero-orbit-chip chip-right" aria-hidden="true">
+            <span class="orbit-dot amber"></span>
+            <span>BLENDER 3D · 60FPS MOTION</span>
+          </div>
           <h1 class="hero-giant-heading" aria-label="林知夏 ZHIXIA STUDIO">
             <span id="heroTitleLine1" class="hero-giant-cn">林知夏,</span>
             <span id="heroTitleLine2" class="hero-giant-en">ZHIXIA STUDIO</span>
@@ -127,6 +140,13 @@
       <div class="marquee-track-wrap"><div id="marqueeRow2" class="marquee-row"></div></div>
     </section>
 
+    <!-- 动能宣言飘带 1 -->
+    <div class="kinetic-ribbon-band" aria-hidden="true">
+      <div class="kinetic-ribbon-track" data-ribbon-dir="1">
+        <span>PRODUCT UI ✦ DESIGN TOKENS ✦ BRAND VI ✦ PACKAGING 3D ✦ RIVE MOTION ✦ BLENDER ART DIRECTION ✦ PRODUCT UI ✦ DESIGN TOKENS ✦ BRAND VI ✦ PACKAGING 3D ✦ RIVE MOTION ✦ BLENDER ART DIRECTION ✦</span>
+      </div>
+    </div>
+
     <!-- 3. ABOUT ME + 4 件设计行业 3D 悬浮道具 -->
     <section id="sec-about" class="about-section">
       <img src="./assets/prop-lens.png" alt="" class="about-prop prop-tl" data-parallax="0.18" aria-hidden="true" />
@@ -136,7 +156,7 @@
 
       <div class="shell about-shell">
         <span class="mono-kicker">01 / ABOUT THE JUNIOR DESIGNER</span>
-        <h2 class="display-xl about-heading">
+        <h2 class="display-xl about-heading" data-kinetic-heading>
           ABOUT
           <span class="about-avatar-chip"><img src="./assets/hero-avatar-3d.png" alt="林知夏" /></span>
           ME
@@ -167,7 +187,7 @@
         <div class="sheet-head">
           <div>
             <span class="mono-kicker dark-ink">02 / CURATED DESIGN CASE STUDIES</span>
-            <h2 class="display-xl dark-ink">FEATURED<br />WORKS</h2>
+            <h2 class="display-xl dark-ink" data-kinetic-heading>FEATURED<br />WORKS</h2>
           </div>
           <p class="sheet-lead dark-muted">
             白底美术馆式无外框装裱，聚焦交互系统重构、品牌全案视觉与三维动态字体实验。点击任意作品即可浏览背景拆解、设计策略与交付物明细。
@@ -200,7 +220,7 @@
         <div class="sheet-head">
           <div>
             <span class="mono-kicker">03 / DESIGN METHODOLOGY</span>
-            <h2 class="display-xl">CREATIVE<br />WORKFLOWS</h2>
+            <h2 class="display-xl" data-kinetic-heading>CREATIVE<br />WORKFLOWS</h2>
           </div>
           <p class="sheet-lead">将四条核心设计能力线凝练为随滚动层层锁定的立体卡片，呈现从调研洞察到落地的完整思路。</p>
         </div>
@@ -208,13 +228,20 @@
       </div>
     </section>
 
+    <!-- 动能宣言飘带 2 -->
+    <div class="kinetic-ribbon-band ribbon-alt" aria-hidden="true">
+      <div class="kinetic-ribbon-track" data-ribbon-dir="-1">
+        <span>BEFORE / AFTER GRADING ✦ VERLET 3D PASS ✦ INTERACTIVE LAB ✦ ZERO-FLICKER MOTION ✦ BEFORE / AFTER GRADING ✦ VERLET 3D PASS ✦ INTERACTIVE LAB ✦ ZERO-FLICKER MOTION ✦</span>
+      </div>
+    </div>
+
     <!-- 5.5 交互视觉实验室：双帘实时调色台 + Verlet 3D 设计师工牌 -->
     <section id="sec-lab" class="sheet-dark lab-band">
       <div class="shell">
         <div class="sheet-head">
           <div>
             <span class="mono-kicker">04 / LIVE COLOR GRADING STUDIO &amp; 3D PASS</span>
-            <h2 class="display-xl">INTERACTIVE<br />VISUAL LAB</h2>
+            <h2 class="display-xl" data-kinetic-heading>INTERACTIVE<br />VISUAL LAB</h2>
           </div>
           <div>
             <p class="sheet-lead">无需安装软件即可在网页实测我的色彩审美与交互掌控力：拖动中间分割线实时对比原片与调色效果，右侧可拽动 3D 设计师工牌并翻转查看求职状态。</p>
@@ -327,7 +354,7 @@
         <div class="sheet-head">
           <div>
             <span class="mono-kicker">05 / CAPABILITIES &amp; CAMPUS MILESTONES</span>
-            <h2 class="display-xl">INTERNSHIP<br />&amp; SERVICES</h2>
+            <h2 class="display-xl" data-kinetic-heading>INTERNSHIP<br />&amp; SERVICES</h2>
           </div>
           <p class="sheet-lead">覆盖大厂设计团队最看重的组件规范力与一线品牌最看重的商业转化落地力，点击任意卡片即可直接带参预约。</p>
         </div>
@@ -350,7 +377,7 @@
         <div class="sheet-head">
           <div>
             <span class="mono-kicker dark-ink">06 / CREATIVE TOOLKIT &amp; CAPABILITY RADAR</span>
-            <h2 class="display-xl dark-ink">TOOL STACK<br />&amp; ANALYTICS</h2>
+            <h2 class="display-xl dark-ink" data-kinetic-heading>TOOL STACK<br />&amp; ANALYTICS</h2>
           </div>
           <p class="sheet-lead dark-muted">横跨平面排版、产品系统设计、动态原型与 Blender 三维渲染的工具链路矩阵。</p>
         </div>
@@ -393,7 +420,7 @@
         <div class="contact-hero-grid">
           <div>
             <span class="mono-kicker">07 / INTERNSHIP &amp; COMMISSION</span>
-            <h2 class="display-xl contact-giant-title">LET'S<br />CREATE</h2>
+            <h2 class="display-xl contact-giant-title" data-kinetic-heading>LET'S<br />CREATE</h2>
             <p class="contact-lead">无论是 2027 暑期 UI/交互实习邀约，还是新消费品牌 VI、活动海报、校园文创或 Blender 产品渲染需求，欢迎带着你的参考图与时间节点来聊聊。</p>
             <div class="contact-info-grid">
               <div class="contact-meta-card">
@@ -472,34 +499,107 @@
     </section>
   </main>
 
-  <!-- 右侧深度作品抽屉 -->
+  <!-- 右侧深度 Bento 作品详情抽屉 -->
   <div id="workDrawer" class="drawer-backdrop" hidden aria-hidden="true">
     <div class="drawer-overlay" id="drawerOverlay"></div>
-    <aside class="drawer-panel" role="dialog" aria-modal="true">
+    <aside class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+      <div class="drawer-progress-track"><div id="drawerProgressFill" class="drawer-progress-fill"></div></div>
       <div class="drawer-top-bar">
-        <div style="display:flex;gap:8px;align-items:center;">
+        <div class="drawer-top-badges">
           <span id="drawerCatBadge" class="mono-badge"></span>
           <span id="drawerCodeBadge" class="mono-code-badge"></span>
+          <span id="drawerIndexBadge" class="mono-tag drawer-index-badge">CASE 01 / 09</span>
         </div>
+        <span class="drawer-kbd-hint mono-tag">← → 切换案例 · ESC 关闭</span>
         <button id="drawerCloseBtn" class="drawer-close-btn" type="button" aria-label="关闭抽屉">✕</button>
       </div>
+
       <div class="drawer-scroll-body">
-        <h3 id="drawerTitle" class="drawer-title"></h3>
-        <p id="drawerSubtitle" class="drawer-subtitle"></p>
-        <div class="drawer-main-img-box"><img id="drawerMainImg" src="" alt="案例大图" /></div>
-        <div class="drawer-section"><span class="mono-tag">01 / PROBLEM</span><h4>背景痛点与设计挑战</h4><p id="drawerProblem"></p></div>
-        <div class="drawer-section"><span class="mono-tag">02 / STRATEGY</span><h4>视觉推导与解决方案</h4><p id="drawerSolution"></p></div>
-        <div class="drawer-section"><span class="mono-tag">03 / HIGHLIGHTS</span><h4>核心落地亮点</h4><ul id="drawerHighlights" class="drawer-list"></ul></div>
-        <div class="drawer-section"><span class="mono-tag">04 / DELIVERABLES</span><h4>交付清单</h4><ul id="drawerDeliverables" class="drawer-list"></ul></div>
+        <!-- A. 暗夜沉浸式画报头图区 -->
+        <section class="drawer-hero-stage drawer-bento-item">
+          <div class="drawer-hero-aura" aria-hidden="true"></div>
+          <div class="drawer-meta-pills">
+            <span id="drawerRoleBadge" class="drawer-meta-chip"></span>
+            <span id="drawerTimelineBadge" class="drawer-meta-chip"></span>
+            <div id="drawerTagPills" class="drawer-tags-inline"></div>
+          </div>
+          <h3 id="drawerTitle" class="drawer-title"></h3>
+          <p id="drawerSubtitle" class="drawer-subtitle"></p>
+          <div id="drawerMainImgBox" class="drawer-main-img-box" title="点击全屏放大查看">
+            <img id="drawerMainImg" src="" alt="案例大图" />
+            <span class="drawer-zoom-hint">点击全屏放大 ↗</span>
+          </div>
+        </section>
+
+        <!-- B. 3 列动态 KPI 指标 Bento 带 -->
+        <section id="drawerKpiGrid" class="drawer-kpi-grid drawer-bento-item" aria-label="核心成果指标"></section>
+
+        <!-- C. 非对称黑白双栏对比：痛点挑战 vs 破局策略 -->
+        <section class="drawer-narrative-grid drawer-bento-item">
+          <article class="drawer-card-challenge">
+            <span class="mono-kicker">01 / PROBLEM CHALLENGE</span>
+            <h4>背景痛点与设计挑战</h4>
+            <p id="drawerProblem"></p>
+          </article>
+          <article class="drawer-card-strategy">
+            <span class="mono-kicker dark-ink">02 / STRATEGIC SOLUTION</span>
+            <h4>视觉推导与破局策略</h4>
+            <p id="drawerSolution"></p>
+          </article>
+        </section>
+
+        <!-- D. 4 节点设计流程管线 -->
+        <section class="drawer-bento-card drawer-process-card drawer-bento-item">
+          <div class="drawer-card-head">
+            <span class="mono-tag dark-ink">03 / END-TO-END DESIGN PIPELINE</span>
+            <h4>从洞察到落地的四步推演路径</h4>
+          </div>
+          <div id="drawerProcessFlow" class="drawer-process-flow"></div>
+        </section>
+
+        <!-- E. 交互式色板 & 技术标签条 -->
+        <section class="drawer-bento-card drawer-palette-card drawer-bento-item">
+          <div class="drawer-card-head">
+            <span class="mono-tag dark-ink">04 / INTERACTIVE COLOR SYSTEM</span>
+            <h4>项目视觉色彩体系（点击任意色块复制 HEX）</h4>
+          </div>
+          <div id="drawerPaletteStrip" class="drawer-palette-strip"></div>
+        </section>
+
+        <!-- F. 2x2 编号核心亮点 Bento 砖块 -->
+        <section class="drawer-bento-card drawer-highlights-wrap drawer-bento-item">
+          <div class="drawer-card-head">
+            <span class="mono-tag dark-ink">05 / VERIFIED HIGHLIGHTS</span>
+            <h4>核心落地亮点与量化反馈</h4>
+          </div>
+          <div id="drawerHighlights" class="drawer-highlights-grid"></div>
+        </section>
+
+        <!-- G. 蓝图文件后缀式交付清单 -->
+        <section class="drawer-bento-card drawer-deliverables-wrap drawer-bento-item">
+          <div class="drawer-card-head">
+            <span class="mono-tag dark-ink">06 / DELIVERABLE BLUEPRINTS</span>
+            <h4>标准化可验证交付物清单</h4>
+          </div>
+          <div id="drawerDeliverables" class="drawer-deliverables-grid"></div>
+        </section>
       </div>
+
       <div class="drawer-footer-bar">
         <div class="drawer-work-switch">
           <button id="drawerPrevWorkBtn" type="button" class="drawer-switch-btn">← 上一作品</button>
-          <button id="drawerNextWorkBtn" type="button" class="drawer-switch-btn">下一作品 →</button>
+          <button id="drawerNextWorkBtn" type="button" class="drawer-switch-btn drawer-switch-next">下一作品 →</button>
         </div>
         <button id="drawerInquireBtn" type="button" class="btn-pill-primary" style="flex:1;justify-content:center;">咨询同类合作 / 索要原文件 ↗</button>
       </div>
     </aside>
+  </div>
+
+  <!-- 全屏高清图片灯箱 -->
+  <div id="imgLightbox" class="img-lightbox" hidden aria-hidden="true">
+    <button id="lightboxCloseBtn" class="lightbox-close-btn" type="button" aria-label="关闭全屏预览">✕</button>
+    <img id="lightboxImg" src="" alt="全屏设计视觉大图" />
+    <div id="lightboxCaption" class="lightbox-caption"></div>
   </div>
 
   <!-- 非工科专属：HR & 甲方互动快问快答台 -->
