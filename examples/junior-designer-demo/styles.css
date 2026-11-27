@@ -814,7 +814,20 @@ body {
   text-align: center;
 }
 
+.about-shell > .mono-kicker {
+  display: block;
+  margin-bottom: 12px;
+}
+
 .about-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.about-heading .kinetic-line-inner {
   display: inline-flex;
   align-items: center;
   justify-content: center;
