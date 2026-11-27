@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>林知夏｜ZHIXIA STUDIO · 2027届视觉与交互设计作品集</title>
+  <meta name="description" content="大三视觉传达与数字媒体交互设计作品集：涵盖产品 UI 系统、品牌包装 VI、三维字体动效、实时调色实验室与校园策展全案。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Kanit:wght@700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+</head>
+<body>
+  <div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
+
+  <!-- 极简渐进毛玻璃顶栏 -->
+  <header id="siteHeader" class="site-header">
+    <div class="nav-shell">
+      <a href="#top" class="brand-link">
+        <span class="brand-monogram">ZX</span>
+        <span class="brand-wordmark">ZHIXIA STUDIO</span>
+      </a>
+
+      <nav class="nav-links" aria-label="主导航">
+        <span id="navActiveIndicator" class="nav-active-pill" aria-hidden="true"></span>
+        <a href="#sec-about" class="nav-item" data-nav-target="#sec-about">关于我</a>
+        <a href="#sec-works" class="nav-item" data-nav-target="#sec-works">精选作品</a>
+        <a href="#sec-workflows" class="nav-item" data-nav-target="#sec-workflows">设计流程</a>
+        <a href="#sec-lab" class="nav-item" data-nav-target="#sec-lab">调色实验室</a>
+        <a href="#sec-tutoring" class="nav-item" data-nav-target="#sec-tutoring">实习与经历</a>
+        <a href="#sec-archive" class="nav-item" data-nav-target="#sec-archive">能力看板</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button id="cmdPaletteTrigger" type="button" class="nav-cmd-btn" title="快速查找作品与经历 (Ctrl+K)">
+          <span>快速检索</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <button id="navQaTriggerBtn" type="button" class="nav-cmd-btn nav-qa-btn" title="打开 HR / 甲方互动快问快答台">
+          <span>✨ 互动问答</span>
+        </button>
+        <button id="copyContactHeaderBtn" type="button" class="nav-wechat-btn" title="点击复制联系微信">
+          <span class="status-dot"></span>
+          <span>求职/约稿联系</span>
+        </button>
+        <button id="themeToggleBtn" type="button" class="nav-theme-btn" aria-label="切换暗夜/浅色模式" title="切换暗夜/浅色模式">◐</button>
+        <button id="mobileMenuBtn" type="button" class="nav-mobile-btn" aria-label="打开菜单">
+          <span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobileNavDrawer" class="mobile-nav-drawer" hidden>
+      <a href="#sec-about" class="mobile-nav-link">01 / 关于我与设计背景</a>
+      <a href="#sec-works" class="mobile-nav-link">02 / 精选品牌与 UI 案例</a>
+      <a href="#sec-workflows" class="mobile-nav-link">03 / 四大设计工作流</a>
+      <a href="#sec-lab" class="mobile-nav-link">04 / 实时调色实验室 &amp; 3D 工牌</a>
+      <a href="#sec-tutoring" class="mobile-nav-link">05 / 实习规划与校园策展履历</a>
+      <a href="#sec-contact" class="mobile-nav-link">06 / 预约面试与约稿沟通</a>
+      <div class="mobile-nav-tools">
+        <button id="mobileCmdBtn" type="button" class="mobile-tool-btn">快速检索 ⌘K</button>
+        <button id="mobileQaBtn" type="button" class="mobile-tool-btn">✨ 互动问答台</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. MotionSites 全视口无边框首屏 + 盲盒 3D 女生设计师形象 -->
+    <section id="top" class="hero-stage">
+      <canvas id="heroWebglCanvas" class="hero-webgl-canvas" aria-hidden="true"></canvas>
+      <div class="hero-grid-overlay" aria-hidden="true"></div>
+      <div id="heroAtmoGlow" class="hero-atmo-glow" aria-hidden="true"></div>
+      <div class="hero-bottom-glow" aria-hidden="true"></div>
+
+      <div class="shell hero-shell">
+        <div class="hero-top-meta">
+          <div class="hero-status-pill">
+            <span class="status-dot"></span>
+            <span>2027届视觉传达与交互设计在读（大三） · 寻找暑期 UI/品牌实习</span>
+          </div>
+          <div class="hero-discipline-tags">
+            <span class="mono-tag">PRODUCT UI · BRAND VI · MOTION &amp; BLENDER 3D</span>
+            <span id="heroTelemetryHud" class="mono-tag hero-telemetry-hud">ATELIER · 60FPS</span>
+          </div>
+        </div>
+
+        <div class="hero-centerpiece">
+          <h1 class="hero-giant-heading" aria-label="林知夏 ZHIXIA STUDIO">
+            <span id="heroTitleLine1" class="hero-giant-cn">林知夏,</span>
+            <span id="heroTitleLine2" class="hero-giant-en">ZHIXIA STUDIO</span>
+          </h1>
+          <div id="heroAvatarWrap" class="hero-avatar-stage">
+            <div class="hero-avatar-halo" aria-hidden="true"></div>
+            <img src="./assets/hero-avatar-3d.png" alt="林知夏 3D 盲盒潮玩设计师形象" class="hero-avatar-img" decoding="async" draggable="false" />
+          </div>
+        </div>
+
+        <div class="hero-bottom-bar">
+          <div class="hero-bottom-left">
+            <p class="hero-lead">
+              专注可落地的 <strong>B/C 端产品 UI 规范、新消费品牌包装、动态字体海报与摄影后期调色</strong>。GPA 3.91/4.0（前 5%），大三即刻接受 2027 暑期实习面试与创意视觉合作。
+            </p>
+            <div class="hero-cta-group">
+              <a href="#sec-works" class="btn-pill-primary">
+                <span>浏览 9 大精选案例</span>
+                <span>↗</span>
+              </a>
+              <a href="#sec-lab" class="btn-pill-outline">
+                <span>视觉调色实验室</span>
+                <span>↗</span>
+              </a>
+              <button id="heroCopyWechatBtn" type="button" class="btn-pill-ghost">
+                <span>复制微信 zhixia_design_demo</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="heroMetricsGrid" class="hero-metrics-strip"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. 滚轮驱动双行反向视觉海报墙 -->
+    <section class="marquee-section" aria-label="精选设计海报走廊">
+      <div class="marquee-track-wrap"><div id="marqueeRow1" class="marquee-row"></div></div>
+      <div class="marquee-track-wrap"><div id="marqueeRow2" class="marquee-row"></div></div>
+    </section>
+
+    <!-- 3. ABOUT ME + 4 件设计行业 3D 悬浮道具 -->
+    <section id="sec-about" class="about-section">
+      <img src="./assets/prop-lens.png" alt="" class="about-prop prop-tl" data-parallax="0.18" aria-hidden="true" />
+      <img src="./assets/prop-swatch.png" alt="" class="about-prop prop-tr" data-parallax="-0.15" aria-hidden="true" />
+      <img src="./assets/prop-stylus.png" alt="" class="about-prop prop-bl" data-parallax="-0.18" aria-hidden="true" />
+      <img src="./assets/prop-prism.png" alt="" class="about-prop prop-br" data-parallax="0.16" aria-hidden="true" />
+
+      <div class="shell about-shell">
+        <span class="mono-kicker">01 / ABOUT THE JUNIOR DESIGNER</span>
+        <h2 class="display-xl about-heading">
+          ABOUT
+          <span class="about-avatar-chip"><img src="./assets/hero-avatar-3d.png" alt="林知夏" /></span>
+          ME
+        </h2>
+        <p id="aboutRevealText" class="about-reveal-text">
+          我是林知夏，视觉传达与数字媒体交互大三在读生。相比只停留于装饰层的炫技排版，我更在意每一次用户路径减负、每一个 Figma 语义化 Token 的研发可读性，以及品牌物料走出屏幕来到线下货架时的真实触感。从暑期互联网设计实训到独立承接精品咖啡与校园毕业展主视觉，我坚持用“克制的秩序 + 有记忆点的三维质感”讲好每个故事。
+        </p>
+        <div class="about-pillars-strip">
+          <div class="about-pillar-cell">
+            <span class="mono-tag">PRODUCT UI &amp; TOKENS</span>
+            <p>具备 Figma Variables、WCAG 无障碍校准与研发走查实战能力。</p>
+          </div>
+          <div class="about-pillar-cell">
+            <span class="mono-tag">BRAND &amp; PACKAGING</span>
+            <p>覆盖标志推导、印前专色校色与 Blender 4K 产品棚拍级渲染。</p>
+          </div>
+          <div class="about-pillar-cell">
+            <span class="mono-tag">INTERNSHIP READY</span>
+            <p>GPA 专业前 5%，支持 2027 暑期连续 4-6 个月全职实习到岗。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 纯白圆角画廊：FEATURED WORKS 无框作品展陈 + HR/甲方意图分流 -->
+    <section id="sec-works" class="sheet-white rounded-sheet">
+      <div class="shell">
+        <div class="sheet-head">
+          <div>
+            <span class="mono-kicker dark-ink">02 / CURATED DESIGN CASE STUDIES</span>
+            <h2 class="display-xl dark-ink">FEATURED<br />WORKS</h2>
+          </div>
+          <p class="sheet-lead dark-muted">
+            白底美术馆式无外框装裱，聚焦交互系统重构、品牌全案视觉与三维动态字体实验。点击任意作品即可浏览背景拆解、设计策略与交付物明细。
+          </p>
+        </div>
+
+        <div class="intent-quick-strip">
+          <div id="workIntentButtons" class="intent-pills-row">
+            <button type="button" class="intent-pill-btn active" data-intent="all">✦ 全部精选案例 (9)</button>
+            <button type="button" class="intent-pill-btn" data-intent="hr">🏢 我是 HR · 看实习与交互项目 (5)</button>
+            <button type="button" class="intent-pill-btn" data-intent="client">🎨 我是甲方 · 看品牌与视觉约稿 (4)</button>
+          </div>
+          <a href="#sec-tutoring" class="intent-jump-link">查看实习规划与奖项履历 ↓</a>
+        </div>
+
+        <div class="editorial-toolbar">
+          <div id="workFilterButtons" class="pill-group light-pills"></div>
+          <div class="search-wrap">
+            <input id="workSearchInput" type="search" placeholder="搜索案例：PULSE / Figma / 咖啡 / Rive / Blender..." aria-label="搜索设计案例" />
+          </div>
+        </div>
+
+        <div id="worksGrid" class="works-gallery-grid"></div>
+      </div>
+    </section>
+
+    <!-- 5. 曜石黑粘性堆叠卡片：DESIGN WORKFLOWS -->
+    <section id="sec-workflows" class="sheet-dark rounded-sheet">
+      <div class="shell">
+        <div class="sheet-head">
+          <div>
+            <span class="mono-kicker">03 / DESIGN METHODOLOGY</span>
+            <h2 class="display-xl">CREATIVE<br />WORKFLOWS</h2>
+          </div>
+          <p class="sheet-lead">将四条核心设计能力线凝练为随滚动层层锁定的立体卡片，呈现从调研洞察到落地的完整思路。</p>
+        </div>
+        <div id="stickyStackList" class="sticky-stack-wrap"></div>
+      </div>
+    </section>
+
+    <!-- 5.5 交互视觉实验室：双帘实时调色台 + Verlet 3D 设计师工牌 -->
+    <section id="sec-lab" class="sheet-dark lab-band">
+      <div class="shell">
+        <div class="sheet-head">
+          <div>
+            <span class="mono-kicker">04 / LIVE COLOR GRADING STUDIO &amp; 3D PASS</span>
+            <h2 class="display-xl">INTERACTIVE<br />VISUAL LAB</h2>
+          </div>
+          <div>
+            <p class="sheet-lead">无需安装软件即可在网页实测我的色彩审美与交互掌控力：拖动中间分割线实时对比原片与调色效果，右侧可拽动 3D 设计师工牌并翻转查看求职状态。</p>
+            <button id="openQaStudioBtn" type="button" class="btn-pill-outline" style="margin-top: 12px;">
+              <span>打开 HR / 甲方互动快问快答 ✨</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="lab-bento-grid">
+          <article id="gradingLabCard" class="bento-card">
+            <div class="grading-header">
+              <div>
+                <span class="mono-kicker">BEFORE / AFTER SPLIT GRADING LAB</span>
+                <h3 class="grading-title">实时双帘色彩分级与风格色板工作台</h3>
+              </div>
+              <div class="grading-actions">
+                <div id="gradingPresets" class="grading-preset-group">
+                  <button type="button" class="grading-preset-btn active" data-preset="klein">克莱因画报</button>
+                  <button type="button" class="grading-preset-btn" data-preset="amber">暖阳胶片</button>
+                  <button type="button" class="grading-preset-btn" data-preset="cyber">夜色赛博</button>
+                </div>
+                <button id="copyPaletteCssBtn" type="button" class="grading-copy-btn">复制当前色板 CSS ↗</button>
+              </div>
+            </div>
+
+            <div id="gradingStageWrap" class="grading-stage-wrap">
+              <canvas id="gradingCanvas" class="grading-canvas" aria-label="双帘实时调色对比画布"></canvas>
+              <span class="grading-badge-raw">BEFORE · 原始灰片</span>
+              <span class="grading-badge-graded">AFTER · 风格调色</span>
+              <div id="gradingDividerLine" class="grading-divider-line" style="left: 58%;">
+                <div class="grading-divider-knob">↔</div>
+              </div>
+            </div>
+
+            <div class="grading-controls-grid">
+              <div class="grading-sliders">
+                <label class="grading-slider-row" for="gradExp">
+                  <span>曝光 Exp</span>
+                  <input id="gradExp" type="range" min="-0.8" max="0.8" step="0.05" value="0.25" />
+                  <output id="gradExpVal">+0.25</output>
+                </label>
+                <label class="grading-slider-row" for="gradWarm">
+                  <span>色温 Temp</span>
+                  <input id="gradWarm" type="range" min="-40" max="40" step="2" value="-18" />
+                  <output id="gradWarmVal">-18</output>
+                </label>
+                <label class="grading-slider-row" for="gradCon">
+                  <span>反差 Cont</span>
+                  <input id="gradCon" type="range" min="0.80" max="1.60" step="0.02" value="1.24" />
+                  <output id="gradConVal">1.24</output>
+                </label>
+              </div>
+
+              <div id="gradingPaletteBoxes" class="grading-palette-boxes"></div>
+            </div>
+          </article>
+
+          <article id="lanyardStage" class="bento-card bento-lanyard-stage">
+            <div class="lanyard-anchor-rail">
+              <span class="mono-tag">INTERACTIVE 3D PASS · DRAG &amp; FLING</span>
+              <button id="lanyardFlipBtn" type="button" class="lanyard-flip-btn">翻转背面 ↻</button>
+            </div>
+            <canvas id="lanyardRopeCanvas" class="lanyard-rope-canvas" aria-hidden="true"></canvas>
+            <div id="lanyardCard3d" class="lanyard-card-3d" tabindex="0">
+              <div class="lanyard-card-inner">
+                <div class="lanyard-face lanyard-face-front">
+                  <div class="lanyard-slot" aria-hidden="true"></div>
+                  <div class="lanyard-front-head">
+                    <span class="mono-tag">ZX // STUDIO PASS</span>
+                    <span class="lanyard-id-pill">2027 · INTERNSHIP OPEN</span>
+                  </div>
+                  <div class="lanyard-avatar-stage">
+                    <img src="./assets/hero-avatar-3d.png" alt="林知夏 3D 设计师工牌" class="lanyard-avatar-img" draggable="false" />
+                  </div>
+                  <div class="lanyard-front-foot">
+                    <div class="lanyard-name-row">
+                      <strong>林知夏 · ZHIXIA STUDIO</strong>
+                      <span class="lanyard-live-dot"><i class="status-dot"></i>READY</span>
+                    </div>
+                    <span class="lanyard-role-line">UI / Brand VI / Blender / Visual Direction</span>
+                  </div>
+                </div>
+                <div class="lanyard-face lanyard-face-back">
+                  <div class="lanyard-slot" aria-hidden="true"></div>
+                  <div class="lanyard-back-top">
+                    <span class="mono-kicker">JUNIOR DESIGNER CREDENTIAL</span>
+                    <h3>求职与商业视觉合作凭证</h3>
+                    <p>视觉传达与数字媒体交互大三在读（GPA 3.91/4.0），2027 暑期可全职实习 4-6 个月，欢迎内推面试与品牌约稿。</p>
+                  </div>
+                  <ul class="lanyard-back-specs">
+                    <li><span>14+</span>完整品牌与产品交互全案</li>
+                    <li><span>42+</span>平面海报、包装与动效作品</li>
+                    <li><span>8项</span>全国大学生广告艺术大赛等奖项</li>
+                  </ul>
+                  <button id="lanyardCopyBtn" type="button" class="btn-pill-spark" style="width:100%;justify-content:center;">复制联系微信 zhixia_design_demo ↗</button>
+                  <span class="lanyard-back-meta">hello@zhixia-studio.example · 48H RESPONSE</span>
+                </div>
+              </div>
+            </div>
+            <div class="lanyard-hint mono-tag">按住工牌任意拖拽甩动 · 点击右上角翻转查看履历</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. 合作服务边界 & 实习与策展经历手风琴 -->
+    <section id="sec-tutoring" class="sheet-dark tutoring-band">
+      <div class="shell">
+        <div class="sheet-head">
+          <div>
+            <span class="mono-kicker">05 / CAPABILITIES &amp; CAMPUS MILESTONES</span>
+            <h2 class="display-xl">INTERNSHIP<br />&amp; SERVICES</h2>
+          </div>
+          <p class="sheet-lead">覆盖大厂设计团队最看重的组件规范力与一线品牌最看重的商业转化落地力，点击任意卡片即可直接带参预约。</p>
+        </div>
+
+        <div id="servicesGrid" class="pillars-grid"></div>
+
+        <div class="sub-block-header">
+          <div>
+            <span class="mono-kicker">TIMELINE / INTERNSHIP &amp; HONORS</span>
+            <h3 class="sub-block-title">实习实训、校园策展主创与竞赛获奖履历</h3>
+          </div>
+        </div>
+        <div id="expAccordionList" class="swiss-accordion-list"></div>
+      </div>
+    </section>
+
+    <!-- 7. 纯白工具栈 & ECharts 能力看板 -->
+    <section id="sec-archive" class="sheet-white rounded-sheet">
+      <div class="shell">
+        <div class="sheet-head">
+          <div>
+            <span class="mono-kicker dark-ink">06 / CREATIVE TOOLKIT &amp; CAPABILITY RADAR</span>
+            <h2 class="display-xl dark-ink">TOOL STACK<br />&amp; ANALYTICS</h2>
+          </div>
+          <p class="sheet-lead dark-muted">横跨平面排版、产品系统设计、动态原型与 Blender 三维渲染的工具链路矩阵。</p>
+        </div>
+
+        <div id="toolStackCloud" class="tool-stack-cloud"></div>
+
+        <div class="infographic-top-grid">
+          <div class="editorial-panel">
+            <div class="panel-head">
+              <div>
+                <span class="mono-tag dark-ink">01 / SIX-AXIS DESIGN RADAR</span>
+                <h3>六维视觉与产品交互能力雷达</h3>
+              </div>
+              <span class="mono-badge">GPA TOP 5%</span>
+            </div>
+            <div id="radarChart" class="echart-radar-box"></div>
+          </div>
+
+          <div class="editorial-panel">
+            <div class="panel-head">
+              <div>
+                <span class="mono-tag dark-ink">02 / 42+ WORKS DISTRIBUTION</span>
+                <h3>42+ 作品全量方向构成</h3>
+              </div>
+              <span class="mono-badge">4 TRACKS</span>
+            </div>
+            <div class="donut-split">
+              <div id="donutChart" class="echart-donut-box"></div>
+              <div id="donutLegendList" class="donut-legend-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 曜石黑尾屏合作区 -->
+    <section id="sec-contact" class="sheet-dark rounded-sheet contact-sheet">
+      <div class="contact-top-halo" aria-hidden="true"></div>
+      <div class="shell contact-shell">
+        <div class="contact-hero-grid">
+          <div>
+            <span class="mono-kicker">07 / INTERNSHIP &amp; COMMISSION</span>
+            <h2 class="display-xl contact-giant-title">LET'S<br />CREATE</h2>
+            <p class="contact-lead">无论是 2027 暑期 UI/交互实习邀约，还是新消费品牌 VI、活动海报、校园文创或 Blender 产品渲染需求，欢迎带着你的参考图与时间节点来聊聊。</p>
+            <div class="contact-info-grid">
+              <div class="contact-meta-card">
+                <span class="mono-tag">WECHAT / DIRECT</span>
+                <strong class="contact-meta-val">zhixia_design_demo</strong>
+                <button id="copyWechatContactBtn" type="button" class="btn-inline-copy">复制微信号 ↗</button>
+              </div>
+              <div class="contact-meta-card">
+                <span class="mono-tag">EMAIL / PORTFOLIO PDF</span>
+                <strong class="contact-meta-val">hello@zhixia-studio.example</strong>
+                <span class="contact-meta-sub">可发送 48 页高清 PDF 作品集</span>
+              </div>
+              <div class="contact-meta-card">
+                <span class="mono-tag">INTERNSHIP WINDOW</span>
+                <strong class="contact-meta-val">2027 暑期 4-6 个月</strong>
+                <span class="contact-meta-sub">支持线上面试与现场笔试</span>
+              </div>
+              <div class="contact-meta-card">
+                <span class="mono-tag">DELIVERY STANDARD</span>
+                <strong class="contact-meta-val">Figma / AI / Blender</strong>
+                <span class="contact-meta-sub">交付可编辑源文件 + 2 轮精修</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-form-panel">
+            <span class="mono-tag">30-SECOND BRIEF GENERATOR</span>
+            <h3>快速生成约稿 / 面试沟通卡片</h3>
+            <div class="form-field">
+              <label for="inqCategory">01 / 沟通类型</label>
+              <select id="inqCategory">
+                <option value="2027 暑期 UI / 产品交互实习面试邀约">2027 暑期 UI / 产品交互实习面试邀约</option>
+                <option value="品牌 VI 视觉识别与包装设计合作">品牌 VI 视觉识别与包装设计合作</option>
+                <option value="商业海报 / 校园艺术展主视觉定制">商业海报 / 校园艺术展主视觉定制</option>
+                <option value="Rive / AE 动效或 Blender 三维渲染">Rive / AE 动效或 Blender 三维渲染</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="inqTopic">02 / 岗位团队或品牌项目简介</label>
+              <input id="inqTopic" type="text" placeholder="例：XX 设计中心暑期实习一面 / 精品茶饮礼盒包装..." />
+            </div>
+            <div class="form-field">
+              <label for="inqDeliverable">03 / 期望交付或时间节点</label>
+              <input id="inqDeliverable" type="text" placeholder="点击下方快捷标签自动填入，或手动补充..." />
+            </div>
+            <div class="form-field">
+              <span class="form-sub-label">04 / 零打字快捷偏好标签</span>
+              <div id="inqQuickTags" class="inq-quick-tags">
+                <button type="button" class="inq-tag-chip" data-tag="暑期实习面试">暑期实习面试</button>
+                <button type="button" class="inq-tag-chip" data-tag="需完整作品集PDF">需完整作品集PDF</button>
+                <button type="button" class="inq-tag-chip" data-tag="品牌VI/包装约稿">品牌VI/包装约稿</button>
+                <button type="button" class="inq-tag-chip" data-tag="7天内加急初稿">7天内加急初稿</button>
+                <button type="button" class="inq-tag-chip" data-tag="需可编辑源文件">需可编辑源文件</button>
+              </div>
+            </div>
+            <button id="generateInquiryBtn" type="button" class="btn-pill-spark" style="width:100%;justify-content:center;">
+              <span>复制沟通话术与联系方式 ↗</span>
+            </button>
+          </div>
+        </div>
+
+        <footer class="editorial-footer">
+          <div class="footer-brand-row">
+            <strong>林知夏 · ZHIXIA STUDIO</strong>
+            <span>Kinetic 3D Portfolio Kit — 大三视觉设计方向真实实测 Demo</span>
+          </div>
+          <div class="footer-nav-row">
+            <a href="#top">TOP ↑</a>
+            <a href="#sec-works">FEATURED WORKS</a>
+            <a href="#sec-lab">VISUAL LAB</a>
+            <a href="#sec-tutoring">INTERNSHIP</a>
+            <a href="#sec-archive">ANALYTICS</a>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- 右侧深度作品抽屉 -->
+  <div id="workDrawer" class="drawer-backdrop" hidden aria-hidden="true">
+    <div class="drawer-overlay" id="drawerOverlay"></div>
+    <aside class="drawer-panel" role="dialog" aria-modal="true">
+      <div class="drawer-top-bar">
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span id="drawerCatBadge" class="mono-badge"></span>
+          <span id="drawerCodeBadge" class="mono-code-badge"></span>
+        </div>
+        <button id="drawerCloseBtn" class="drawer-close-btn" type="button" aria-label="关闭抽屉">✕</button>
+      </div>
+      <div class="drawer-scroll-body">
+        <h3 id="drawerTitle" class="drawer-title"></h3>
+        <p id="drawerSubtitle" class="drawer-subtitle"></p>
+        <div class="drawer-main-img-box"><img id="drawerMainImg" src="" alt="案例大图" /></div>
+        <div class="drawer-section"><span class="mono-tag">01 / PROBLEM</span><h4>背景痛点与设计挑战</h4><p id="drawerProblem"></p></div>
+        <div class="drawer-section"><span class="mono-tag">02 / STRATEGY</span><h4>视觉推导与解决方案</h4><p id="drawerSolution"></p></div>
+        <div class="drawer-section"><span class="mono-tag">03 / HIGHLIGHTS</span><h4>核心落地亮点</h4><ul id="drawerHighlights" class="drawer-list"></ul></div>
+        <div class="drawer-section"><span class="mono-tag">04 / DELIVERABLES</span><h4>交付清单</h4><ul id="drawerDeliverables" class="drawer-list"></ul></div>
+      </div>
+      <div class="drawer-footer-bar">
+        <div class="drawer-work-switch">
+          <button id="drawerPrevWorkBtn" type="button" class="drawer-switch-btn">← 上一作品</button>
+          <button id="drawerNextWorkBtn" type="button" class="drawer-switch-btn">下一作品 →</button>
+        </div>
+        <button id="drawerInquireBtn" type="button" class="btn-pill-primary" style="flex:1;justify-content:center;">咨询同类合作 / 索要原文件 ↗</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 非工科专属：HR & 甲方互动快问快答台 -->
+  <div id="qaModalBackdrop" class="modal-backdrop" hidden aria-hidden="true">
+    <div id="qaOverlay" class="modal-overlay"></div>
+    <div class="qa-dialog" role="dialog" aria-modal="true" aria-label="互动快问快答台">
+      <div class="qa-head">
+        <strong style="font-size:15px;">✨ HR / 甲方互动快问快答台（ZHIXIA STUDIO）</strong>
+        <button id="qaCloseBtn" type="button" class="drawer-close-btn" aria-label="关闭问答台">✕</button>
+      </div>
+      <div id="qaChips" class="qa-chips">
+        <button type="button" class="qa-chip active" data-qa="intern">🎓 实习到岗与学校情况</button>
+        <button type="button" class="qa-chip" data-qa="skills">🛠 主力设计软件与交付力</button>
+        <button type="button" class="qa-chip" data-qa="process">📐 商业约稿如何沟通与改稿？</button>
+        <button type="button" class="qa-chip" data-qa="contact">💬 获取微信与作品集 PDF</button>
+      </div>
+      <div id="qaAnswerBox" class="qa-answer-box"></div>
+    </div>
+  </div>
+
+  <!-- Ctrl+K 快速检索面板 -->
+  <div id="cmdPaletteBackdrop" class="modal-backdrop" hidden aria-hidden="true">
+    <div id="cmdOverlay" class="modal-overlay"></div>
+    <div class="cmd-dialog" role="dialog" aria-modal="true" aria-label="全站快速检索">
+      <div class="cmd-input-row">
+        <input id="cmdSearchInput" type="text" placeholder="搜索案例、实习履历、技能或输入：调色 / 问答..." />
+        <button id="cmdCloseBtn" type="button" class="drawer-close-btn" style="width:28px;height:28px;">✕</button>
+      </div>
+      <div id="cmdResultsList" class="cmd-results-list"></div>
+    </div>
+  </div>
+
+  <!-- 滚动后浮现右下角悬浮工具条 -->
+  <aside id="quickFloatBar" class="quick-float-bar is-at-top" aria-label="快捷工具条">
+    <button id="floatWechatBtn" type="button" class="qf-btn qf-primary">
+      <span class="status-dot"></span><span>联系我</span>
+    </button>
+    <button id="floatCmdBtn" type="button" class="qf-btn">⌘K 检索</button>
+    <button id="floatQaBtn" type="button" class="qf-btn qf-desktop-only">✨ 问答</button>
+    <a href="#top" class="qf-btn" aria-label="返回顶部">↑</a>
+  </aside>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="./data.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
