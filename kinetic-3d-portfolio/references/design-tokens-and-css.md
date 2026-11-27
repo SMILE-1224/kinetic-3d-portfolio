@@ -160,6 +160,12 @@ Keep the signature **Obsidian `#0C0C0C` ↔ Pure White `#FFFFFF rounded-t-[48px]
   mask-image: linear-gradient(180deg, #000 80%, transparent 100%);
 }
 
+/* Fallback mask when user uploads an uncut/dark-backdrop photo on vibe-coding platforms */
+.hero-avatar-img.needs-feather {
+  -webkit-mask-image: radial-gradient(ellipse 68% 74% at 50% 45%, #000 50%, transparent 98%);
+  mask-image: radial-gradient(ellipse 68% 74% at 50% 45%, #000 50%, transparent 98%);
+}
+
 @media (max-width: 768px) {
   .hero-centerpiece { min-height: auto; padding: 8px 0 4px; }
   .hero-giant-heading { margin-bottom: 0; }

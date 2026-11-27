@@ -90,6 +90,8 @@ Follow [avatar-and-props-prompts.md](./references/avatar-and-props-prompts.md) t
   - Apply 3D tilt to `.work-media-frame` only.
   - Switch `.hero-avatar-stage` to in-flow `position: relative` below `768px` so mobile stacks cleanly with `0px` overlap or overflow.
   - Compute or verify exact item counts on every filter badge/chip against `data.js`.
+  - **Entry-First Vertical Slice (Vibe Platforms)**: When building in Vite/Vue/React sandboxes (e.g. LearnMotion), wire the root entry (`App.vue` / `App.tsx`) immediately after Hero + Works rather than leaving starter `Welcome.vue` mounted until the last operation.
+  - **Seamless Portrait Feathering & Sheet Seam**: Apply `mask-image: radial-gradient(ellipse 68% 74% at 50% 45%, #000 50%, transparent 98%);` whenever an uploaded portrait has a non-transparent dark backdrop; always keep `border-radius: 48px 48px 0 0; margin-top: -36px;` on `.rounded-sheet` and bind `#workDrawer` header/body to the exact same `activeWork` key.
 
 ---
 
